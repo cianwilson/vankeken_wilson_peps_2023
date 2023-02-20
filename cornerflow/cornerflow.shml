@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<harness_options>
+  <length>
+    <string_value lines="1">short</string_value>
+  </length>
+  <owner>
+    <string_value lines="1">cwilson</string_value>
+  </owner>
+  <description>
+    <string_value lines="1">A simple example setting up a cornerflow in 2D.</string_value>
+  </description>
+  <simulations>
+    <simulation name="CornerFlow">
+      <input_file>
+        <string_value type="filename" lines="1">cornerflow.tfml</string_value>
+      </input_file>
+      <run_when name="input_changed_or_output_missing"/>
+      <parameter_sweep>
+        <parameter name="nx">
+          <values>
+            <string_value lines="1">20</string_value>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+libspud.set_option("/geometry/mesh::Mesh/source/number_cells", [int(nx), int(nx)])</string_value>
+            <single_build/>
+          </update>
+        </parameter>
+      </parameter_sweep>
+    </simulation>
+  </simulations>
+</harness_options>

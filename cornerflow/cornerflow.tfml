@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='utf-8'?>
+<terraferma_options>
+  <geometry>
+    <dimension>
+      <integer_value rank="0">2</integer_value>
+    </dimension>
+    <mesh name="Mesh">
+      <source name="UnitSquare">
+        <number_cells>
+          <integer_value rank="1" dim1="2" shape="2">20 20</integer_value>
+        </number_cells>
+        <diagonal>
+          <string_value lines="1">right/left</string_value>
+        </diagonal>
+        <cell>
+          <string_value lines="1">triangle</string_value>
+        </cell>
+      </source>
+    </mesh>
+  </geometry>
+  <io>
+    <output_base_name>
+      <string_value lines="1">cornerflow</string_value>
+    </output_base_name>
+    <visualization>
+      <element name="P1">
+        <family>
+          <string_value lines="1">CG</string_value>
+        </family>
+        <degree>
+          <integer_value rank="0">1</integer_value>
+        </degree>
+      </element>
+    </visualization>
+    <dump_periods/>
+    <detectors/>
+  </io>
+  <global_parameters>
+    <ufl>
+      <string_value type="code" language="python3" lines="20">x  = SpatialCoordinate(up_e.cell())
+Te = -0.5*x[0]**2 + x[0]
+theta = atan_2(x[1], x[0])
+r = (x[0]**2 + x[1]**2)**0.5
+U = 1
+vet = -U/(0.25*pi - 1)*(-0.25*(pi**2)*sin(theta) 
+                        +0.5*pi*theta*sin(theta) 
+                        +theta*cos(theta))
+ver = U/(0.25*pi - 1)*(-0.25*(pi**2)*cos(theta)
+                        +0.5*pi*(sin(theta)+theta*cos(theta)) 
+                        +cos(theta) 
+                        -theta*sin(theta))
+ve = as_vector([ver*sin(theta) + vet*cos(theta),
+                ver*cos(theta) - vet*sin(theta)])</string_value>
+    </ufl>
+  </global_parameters>
+  <system name="Projection">
+    <mesh name="Mesh"/>
+    <ufl_symbol name="global">
+      <string_value lines="1">up</string_value>
+    </ufl_symbol>
+    <field name="ExactSolution">
+      <ufl_symbol name="global">
+        <string_value lines="1">vef</string_value>
+      </ufl_symbol>
+      <type name="Function">
+        <rank name="Vector" rank="1">
+          <element name="P2">
+            <family>
+              <string_value lines="1">CG</string_value>
+            </family>
+            <degree>
+              <integer_value rank="0">2</integer_value>
+            </degree>
+          </element>
+        </rank>
+      </type>
+      <diagnostics>
+        <include_in_visualization/>
+        <include_in_statistics/>
+      </diagnostics>
+    </field>
+    <nonlinear_solver name="Solver">
+      <type name="SNES">
+        <form name="Residual" rank="0">
+          <string_value type="code" language="python3" lines="20">r = inner(vef_t, vef_i - ve)*dx</string_value>
+          <ufl_symbol name="solver">
+            <string_value lines="1">r</string_value>
+          </ufl_symbol>
+        </form>
+        <form name="Jacobian" rank="1">
+          <string_value type="code" language="python3" lines="20">J = derivative(r, up_i, up_a)</string_value>
+          <ufl_symbol name="solver">
+            <string_value lines="1">J</string_value>
+          </ufl_symbol>
+        </form>
+        <form_representation name="uflacs"/>
+        <quadrature_rule name="default"/>
+        <snes_type name="ls">
+          <ls_type name="cubic"/>
+          <convergence_test name="default"/>
+        </snes_type>
+        <relative_error>
+          <real_value rank="0">1.e-6</real_value>
+        </relative_error>
+        <max_iterations>
+          <integer_value rank="0">1</integer_value>
+        </max_iterations>
+        <monitors>
+          <residual/>
+        </monitors>
+        <linear_solver>
+          <iterative_method name="preonly"/>
+          <preconditioner name="lu">
+            <factorization_package name="mumps"/>
+          </preconditioner>
+        </linear_solver>
+        <never_ignore_solver_failures/>
+      </type>
+      <solve name="in_timeloop"/>
+    </nonlinear_solver>
+  </system>
+</terraferma_options>
