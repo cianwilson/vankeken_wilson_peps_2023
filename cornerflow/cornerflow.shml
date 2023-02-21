@@ -18,7 +18,7 @@
       <parameter_sweep>
         <parameter name="nx">
           <values>
-            <string_value lines="1">20</string_value>
+            <string_value lines="1">20 40 80 160</string_value>
           </values>
           <update>
             <string_value type="code" language="python3" lines="20">import libspud
@@ -27,6 +27,55 @@ libspud.set_option("/geometry/mesh::Mesh/source/number_cells", [int(nx), int(nx)
           </update>
         </parameter>
       </parameter_sweep>
+      <variables>
+        <variable name="l2error">
+          <string_value type="code" language="python3" lines="20">from buckettools.statfile import parser
+stat = parser("cornerflow.stat")
+l2error = stat["Stokes"]["L2ErrorSquared"]["functional_value"][-1]**0.5</string_value>
+        </variable>
+      </variables>
     </simulation>
   </simulations>
+  <tests>
+    <test name="convergence">
+      <string_value type="code" language="python3" lines="20">import numpy as np
+import matplotlib
+# set a display independent backend
+matplotlib.use('Agg')
+import matplotlib.pyplot as pl
+
+
+# get and print the  parameters dictionary in the nested list
+parameters = l2error.parameters
+print(parameters)
+
+# convert nested-list error_l2  to a flattened numpy array
+slice = {}
+error_l2_a = np.array(l2error[slice])
+
+# now make  a pretty convergence plot
+    
+# get the mesh spacing from the parameter ncells (ugly but works)
+nx = parameters['nx']
+h = 1./np.array([int(n) for n in nx])  
+
+# log-log plot of the error  
+pl.figure()
+pl.loglog(h,l2error,'bo-')
+pl.xlabel('h')
+pl.ylabel('||e||_2')
+pl.grid()
+
+# calculate best-fit slope on log-log plot
+p=np.polyfit(np.log(h),np.log(error_l2_a),1)
+
+pl.title('h Convergence, p={0}'.format(p[0]))
+pl.savefig('cornerflow_convergence.pdf')
+
+# check convergence
+print("***********  order of accuracy p=",p[0])
+print("***********  convergence figure in cornerflow_convergence.pdf")
+assert(p[0] &gt; 1.9)</string_value>
+    </test>
+  </tests>
 </harness_options>
