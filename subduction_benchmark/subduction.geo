@@ -1,38 +1,40 @@
+resscale = ${resscale};
+
 uclcdepth = 15;
 mohodepth = 40;
 iodepth = 139;
 
 // POINTS
 // top left
-Point(1) = {0, 0, 0, 2.0};
+Point(1) = {0, 0, 0, 2.0*resscale};
 // top right
-Point(2) = {400, 0, 0, 4.0};
+Point(2) = {400, 0, 0, 4.0*resscale};
 // right upper crust base
-Point(3) = {400, -uclcdepth, 0, 4.0};
+Point(3) = {400, -uclcdepth, 0, 4.0*resscale};
 // right lower crust base (moho)
-Point(4) = {400, -mohodepth, 0, 4.0};
+Point(4) = {400, -mohodepth, 0, 4.0*resscale};
 // bottom right
-Point(5) = {400, -200, 0, 6};
+Point(5) = {400, -200, 0, 6*resscale};
 // lower left
-Point(6) = {0, -200, 0, 6};
+Point(6) = {0, -200, 0, 6*resscale};
 // slab upper crust base
-Point(7) = {2*uclcdepth, -uclcdepth, 0, 2};
+Point(7) = {2*uclcdepth, -uclcdepth, 0, 2*resscale};
 // slab lower crust base (moho)
-Point(8) = {2*mohodepth, -mohodepth, 0, 1};
+Point(8) = {2*mohodepth, -mohodepth, 0, 1*resscale};
 // slab id start
-Point(9) = {140, -70, 0, 1};
+Point(9) = {140, -70, 0, 1*resscale};
 // slab partial coupling depth
-Point(10) = {160, -80, 0, 1};
+Point(10) = {160, -80, 0, 1*resscale};
 // slab id end
-Point(11) = {240, -120, 0, 1};
+Point(11) = {240, -120, 0, 1*resscale};
 // slab full coupling depth
-Point(12) = {165, -82.5, 0, 1};
+Point(12) = {165, -82.5, 0, 1*resscale};
 // moho id start
-Point(13) = {140, -mohodepth, 0, 1};
+Point(13) = {140, -mohodepth, 0, 1*resscale};
 // moho id end
-Point(14) = {240, -mohodepth, 0, 1};
+Point(14) = {240, -mohodepth, 0, 1*resscale};
 // in/out point on rhs boundary
-Point(15) = {400, -iodepth, 0, 4};
+Point(15) = {400, -iodepth, 0, 4*resscale};
 //+
 
 // LINES

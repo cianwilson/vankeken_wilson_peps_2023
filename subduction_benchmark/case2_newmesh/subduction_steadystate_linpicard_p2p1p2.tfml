@@ -698,6 +698,21 @@ values[0] = (v_max*dt)/(2*dcell.circumradius());</string_value>
       </type>
       <diagnostics/>
     </coefficient>
+    <coefficient name="One">
+      <ufl_symbol name="global">
+        <string_value lines="1">one</string_value>
+      </ufl_symbol>
+      <type name="Constant">
+        <rank name="Scalar" rank="0">
+          <value name="WholeMesh" type="value">
+            <constant>
+              <real_value rank="0">1</real_value>
+            </constant>
+          </value>
+        </rank>
+      </type>
+      <diagnostics/>
+    </coefficient>
     <nonlinear_solver name="IsoviscousStokes">
       <type name="SNES">
         <form name="Residual" rank="0">
@@ -935,7 +950,25 @@ r += bpp*dx_slab</string_value>
       <include_in_statistics/>
     </functional>
     <functional name="WedgeRMSSquaredVelocityIntegral">
-      <string_value type="code" language="python3" lines="20">int = inner(v, v)*dx_wedgefluid</string_value>
+      <string_value type="code" language="python3" lines="20">int = inner(v0*v, v0*v)*dx_wedgefluid</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
+    </functional>
+    <functional name="SlabLength">
+      <string_value type="code" language="python3" lines="20">int = one('+')*dS_slabcp</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
+    </functional>
+    <functional name="WedgeArea">
+      <string_value type="code" language="python3" lines="20">int = one('+')*dx_wedgefluid</string_value>
       <ufl_symbol name="functional">
         <string_value lines="1">int</string_value>
       </ufl_symbol>
