@@ -40,7 +40,7 @@ USER tfuser
 WORKDIR $TF_HOME
 
 # install the source repo
-RUN git clone -q https://github.com/cianwilson/vankeken_peps_2023.git
+RUN git clone -q https://github.com/cianwilson/vankeken_wilson_peps_2023.git
 
 # set some useful aliases
 COPY bash_aliases $TF_HOME/.bash_aliases
