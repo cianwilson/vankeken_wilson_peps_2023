@@ -1,0 +1,48 @@
+name: Build and Test
+
+on: [push]
+
+env:
+  registry: ghcr.io
+
+jobs:
+
+  build:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [ "Build Focal" ]
+        include:
+        
+          - name: "Build Focal"
+            release: focal
+    
+    steps:
+
+      - name: Check Out Repo 
+        uses: actions/checkout@v3
+
+      - name: Get Name
+        run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)" >> $GITHUB_ENV
+
+      - name: Login
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.registry }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.REPO_TOKEN }}
+          
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: docker/${{ matrix.release }}/Dockerfile
+          push: true
+          tags: ${{ env.registry }}/cianwilson/vankeken_peps_2023:${{ env.name }}-${{ matrix.release }}
+
+
+
