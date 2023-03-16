@@ -39,7 +39,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: docker/${{ matrix.release }}
           file: docker/${{ matrix.release }}/Dockerfile
           push: true
           tags: ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }}
