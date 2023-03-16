@@ -42,7 +42,7 @@ jobs:
           context: .
           file: docker/${{ matrix.release }}/Dockerfile
           push: true
-          tags: ${{ env.registry }}/cianwilson/vankeken_peps_2023:${{ env.name }}-${{ matrix.release }}
+          tags: ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }}
 
 
 

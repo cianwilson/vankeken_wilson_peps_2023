@@ -1,0 +1,7 @@
+Welcome to the docker container for:
+"An introductory review of thermal structure of subduction zones: II. Numerical approach, validation, and comparison", van Keken and Wilson, PEPS, 2023.
+
+This docker image contains all the input files for the numerical simulations as well as a complete installation of the software
+required to run them.  This allows interested users to generate and modify all the numerical results.
+
+A full description of how to run these simulations can be found in the README.md file.
