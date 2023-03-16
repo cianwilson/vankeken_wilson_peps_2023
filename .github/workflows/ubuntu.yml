@@ -44,6 +44,7 @@ jobs:
           push: true
           tags: ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }}
           no-cache: true
+          platforms: linux/amd64,linux/arm64
 
 
 

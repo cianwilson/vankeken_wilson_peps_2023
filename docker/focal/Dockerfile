@@ -4,7 +4,7 @@
 # materials for van Keken & Wilson, PEPS, 2023.  
 # The built image can be found at:
 #
-#   https://github.com/cianwilson/packages/container/package/base
+#   https://github.com/users/cianwilson/packages/container/package/vankeken_wilson_peps_2023
 #
 
 
