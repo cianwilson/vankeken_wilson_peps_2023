@@ -35,6 +35,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.REPO_TOKEN }}
           
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v3
