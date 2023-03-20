@@ -50,5 +50,40 @@ jobs:
           no-cache: true
           platforms: linux/amd64,linux/arm64
 
+  testing:
+
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [ "Tests" ]
+        include:
+
+          - name: "Tests Focal"
+            release: focal
+            command: "./scripts/run_tests"
+            outputdir: "tests"
+            outputtar: "tests.tar.gz"
+
+    steps:
+
+      - name: ${{ matrix.name }} Name
+        run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)" >> $GITHUB_ENV
+
+      - name: ${{ matrix.name }} Testing
+        run: |
+         chmod 777 .
+         docker pull ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }}
+         docker run -v $PWD:/home/tfuser/shared -e HOST_UID=`id -u` -e HOST_GID=`id -g` --workdir /home/tfuser/vankeken_wilson_peps_2023 ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }} "${{ matrix.command }} || ( tar --exclude=*.build -cvzf ${{ matrix.outputtar }} .; cp -v ${{ matrix.outputtar }} /home/tfuser/shared; ( exit 1 ) )"
+
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          path: ${{ matrix.outputtar }}
+          name: failed_test_outputs
 
 
