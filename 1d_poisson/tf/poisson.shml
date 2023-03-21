@@ -78,7 +78,7 @@ for p in ps:
   # get the mesh spacing from the parameter ncells (ugly but works)
   hs = 1./np.array([int(nc) for nc in ncells])/float(p)  
 
-  with open('convergence_p{}.csv'.format(p), 'w') as f:
+  with open('1d_poisson_convergence_p{}.csv'.format(p), 'w') as f:
     np.savetxt(f, np.c_[[float(nc) for nc in ncells], hs, errors_l2_a], delimiter=',', header='ncells, hs, l2errs')
 
   # calculate best-fit slope on log-log plot

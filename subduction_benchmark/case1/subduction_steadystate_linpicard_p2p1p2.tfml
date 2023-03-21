@@ -50,11 +50,10 @@ t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
       <array name="Trench">
         <python>
           <string_value type="code" language="python3" lines="20">def val():
-  global slab
   import numpy as np
-  x0 = slab.x[0]
-  y0 = slab.y[0]
-  yf = slab.y[-1]
+  x0 = 0
+  y0 = 0
+  yf = -200
   ys = np.arange(y0, yf, -1.)
   coords = [(x0, y) for y in ys]
   return coords</string_value>
@@ -63,244 +62,17 @@ t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
       <array name="Surface">
         <python>
           <string_value type="code" language="python3" lines="20">def val():
-  global slab
   import numpy as np
-  x0 = slab.x[0]
-  xf = slab.x[-1]
+  x0 = 0
+  xf = 400
   xs = np.arange(x0, xf, 1.)
   coords = [(x, 0.0) for x in xs]
   return coords</string_value>
         </python>
       </array>
-      <array name="SlabLayer88">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['88']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer89">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['89']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer90">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['90']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer91">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['91']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer92">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['92']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer93">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['93']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer94">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['94']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer95">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['95']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer96">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['96']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer97">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['97']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer98">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['98']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer99">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['99']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer100">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['100']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer101">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['101']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer102">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['102']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer103">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['103']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer104">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['104']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer105">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['105']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer106">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['106']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer107">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['107']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer108">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['108']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer109">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['109']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer110">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['110']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer111">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['111']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
-      <array name="SlabLayer112">
-        <python>
-          <string_value type="code" language="python3" lines="20">def val():
-  factor, offset = layers['112']
-  nscoords = scoords + (factor*ssthicks + offset)*snormals
-  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)
-  return nscoords[:,nmask].transpose()</string_value>
-        </python>
-      </array>
       <array name="Right">
         <python>
           <string_value type="code" language="python3" lines="20">def val():
-  global slab
   import numpy as np
   coords = [(400, -15), (400, -40)]
   return coords</string_value>
@@ -309,9 +81,18 @@ t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
       <array name="Left">
         <python>
           <string_value type="code" language="python3" lines="20">def val():
-  global slab
   import numpy as np
   coords = [(0, -50)]
+  return coords</string_value>
+        </python>
+      </array>
+      <array name="SlabLayer98">
+        <python>
+          <string_value type="code" language="python3" lines="20">def val():
+  x0 = 0
+  xf = 400
+  xs = np.arange(x0, xf, 1.)
+  coords = [(x, -0.5*x) for x in xs]
   return coords</string_value>
         </python>
       </array>
@@ -376,45 +157,18 @@ dx_wedgeright = dx(4)
 dx_wedge = dx_wedgefluid + dx_wedgeright
 dx_slab = dx(5)
 dS_slabsh = dS((1,2))
-dS_slab = dS((1,2,3,4))</string_value>
+dS_slab = dS((1,2,3,4))
+dS_slabcp = dS((2,3))</string_value>
     </ufl>
     <python>
       <string_value type="code" language="python3" lines="20">import pickle
 import numpy as np
 
-# slab file
-f = open("subduction.slab", 'rb')
-slab = pickle.load(f)
-f.close()
-
 # bounding box
-x0 = slab.x[0]
-y0 = slab.y[0]
-xf = slab.x[-1]
-yf = slab.y[-1]
-
-# vertices
-scoords = [(slab.interpcurves[0].points[0].x, slab.interpcurves[0].points[0].y)]
-scoords += [(curve.points[-1].x, curve.points[-1].y) for curve in slab.interpcurves]
-scoords = np.asarray(scoords).transpose()  # transpose now to avoid some issues later
-
-# normals
-snormals = np.stack([-slab.cs(scoords[0,:], nu=1), np.ones(scoords.shape[1])], axis=0)
-snormags = np.sqrt(np.sum(snormals**2, axis=0))
-snormals = snormals/snormags
-
-# sediment thicknesses
-import sediment_thickness as st
-z0 = st.z0
-z15 = st.z15
-y = scoords[1,:]
-ssthicks = np.where(y&gt;y0, z0, np.where(y&lt;-15, z15, (z0-z15)*(y-y0)/(y0+15) + z0))
-
-# set up layers
-layer_names = [str(name) for name in range(88, 113)]
-layer_factors = [0.0]*11 + [-0.5] + [-1.0]*13
-layer_offsets = np.arange(9.5, 0.0, -1).tolist() + [0.0]*3 + [-0.15, -0.45, -1.4] + np.arange(-2.5, -11, -1).tolist()
-layers = {layer_names[i]:(layer_factors[i], layer_offsets[i]) for i in range(len(layer_names))}</string_value>
+x0 = 0.0
+y0 = 0.0
+xf = 400.0
+yf = -200.0</string_value>
     </python>
   </global_parameters>
   <system name="Stokes">
@@ -907,14 +661,9 @@ values[0] = (v_max*dt)/(2*dcell.circumradius());</string_value>
             </degree>
           </element>
           <value name="WholeMesh" type="value">
-            <python rank="1">
-              <string_value type="code" language="python3" lines="20">def val(x):
-  global slab, gmshtools
-  try:
-    return slab.unittangentx(x[0])
-  except AssertionError:
-    return [0.0,0.0]</string_value>
-            </python>
+            <constant name="dim">
+              <real_value rank="1" dim1="dim" shape="2">0.8944271909999159 -0.4472135954999579</real_value>
+            </constant>
           </value>
         </rank>
       </type>
@@ -929,6 +678,21 @@ values[0] = (v_max*dt)/(2*dcell.circumradius());</string_value>
           <value name="WholeMesh" type="value">
             <constant>
               <real_value rank="0">80.0</real_value>
+            </constant>
+          </value>
+        </rank>
+      </type>
+      <diagnostics/>
+    </coefficient>
+    <coefficient name="One">
+      <ufl_symbol name="global">
+        <string_value lines="1">one</string_value>
+      </ufl_symbol>
+      <type name="Constant">
+        <rank name="Scalar" rank="0">
+          <value name="WholeMesh" type="value">
+            <constant>
+              <real_value rank="0">1</real_value>
             </constant>
           </value>
         </rank>
@@ -1152,6 +916,51 @@ r += bpp*dx_slab</string_value>
       <form_representation name="quadrature"/>
       <quadrature_rule name="default"/>
       <exclude_from_statistics/>
+    </functional>
+    <functional name="SlabTemperatureIntegral">
+      <string_value type="code" language="python3" lines="20">int = T('+')*dS_slabcp</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
+    </functional>
+    <functional name="WedgeTemperatureIntegral">
+      <string_value type="code" language="python3" lines="20">int = T*dx_wedgefluid</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
+    </functional>
+    <functional name="WedgeRMSSquaredVelocityIntegral">
+      <string_value type="code" language="python3" lines="20">int = inner(v0*v, v0*v)*dx_wedgefluid</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
+    </functional>
+    <functional name="SlabLength">
+      <string_value type="code" language="python3" lines="20">int = one('+')*dS_slabcp</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
+    </functional>
+    <functional name="WedgeArea">
+      <string_value type="code" language="python3" lines="20">int = one('+')*dx_wedgefluid</string_value>
+      <ufl_symbol name="functional">
+        <string_value lines="1">int</string_value>
+      </ufl_symbol>
+      <form_representation name="quadrature"/>
+      <quadrature_rule name="default"/>
+      <include_in_statistics/>
     </functional>
   </system>
   <system name="Temperature">

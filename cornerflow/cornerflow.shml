@@ -16,13 +16,23 @@
       </input_file>
       <run_when name="input_changed_or_output_missing"/>
       <parameter_sweep>
-        <parameter name="nx">
+        <parameter name="p">
+          <values>
+            <string_value lines="1">2</string_value>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+libspud.set_option("/system::Stokes/field::Velocity/type/rank/element/degree", int(p))
+libspud.set_option("/system::Stokes/field::Pressure/type/rank/element/degree", int(p)-1)</string_value>
+          </update>
+        </parameter>
+        <parameter name="ncells">
           <values>
             <string_value lines="1">20 40 80 160 320</string_value>
           </values>
           <update>
             <string_value type="code" language="python3" lines="20">import libspud
-libspud.set_option("/geometry/mesh::Mesh/source/number_cells", [int(nx), int(nx)])</string_value>
+libspud.set_option("/geometry/mesh::Mesh/source/number_cells", [int(ncells), int(ncells)])</string_value>
             <single_build/>
           </update>
         </parameter>
@@ -38,44 +48,72 @@ l2error = stat["Stokes"]["L2ErrorSquared"]["functional_value"][-1]**0.5</string_
   </simulations>
   <tests>
     <test name="convergence">
-      <string_value type="code" language="python3" lines="20">import numpy as np
-import matplotlib
-# set a display independent backend
-matplotlib.use('Agg')
-import matplotlib.pyplot as pl
+      <string_value type="code" language="python3" lines="20">import os
+havedisplay = False
+if os.environ.get('PLOT', 0):
+  exitval = os.system('python3 -c "import matplotlib.pyplot as plt; plt.figure()"')
+  havedisplay = (exitval == 0) and "DISPLAY" in os.environ
 
+import matplotlib
+if havedisplay:
+  matplotlib.use('GTK3Agg')
+else:
+  matplotlib.use('Agg')
+import matplotlib.pyplot as pl
+import numpy as np
+import itertools
+
+pl.figure()
 
 # get and print the  parameters dictionary in the nested list
-parameters = l2error.parameters
-print(parameters)
+params = l2error.parameters
+ncells = params['ncells']
+ps = params['p']
 
-# convert nested-list error_l2  to a flattened numpy array
-slice = {}
-error_l2_a = np.array(l2error[slice])
+test_passes = True
+for p in ps:
+  key = {'p':p}
+  # convert nested-list error_l2  to a flattened numpy array
+  errors_l2_a = np.array(l2error[key])
 
-# now make  a pretty convergence plot
-    
-# get the mesh spacing from the parameter ncells (ugly but works)
-nx = parameters['nx']
-h = 1./np.array([int(n) for n in nx])  
+  # get the mesh spacing from the parameter ncells (ugly but works)
+  hs = 1./np.array([int(nc) for nc in ncells])/float(p)  
 
-# log-log plot of the error  
-pl.figure()
-pl.loglog(h,l2error,'bo-')
+  with open('cornerflow_convergence_p{}.csv'.format(p), 'w') as f:
+    np.savetxt(f, np.c_[[float(nc) for nc in ncells], hs, errors_l2_a], delimiter=',', header='ncells, hs, l2errs')
+
+  # calculate best-fit slope on log-log plot
+  fit = np.polyfit(np.log(hs),np.log(errors_l2_a),1)
+  print("***********  order of accuracy p={}, order={:.2f}".format(p,fit[0]))
+
+  pl.loglog(hs,errors_l2_a,'o-',label='p={}, order={:.2f}'.format(p,fit[0]))
+  
+  test_passes = test_passes and fit[0] &gt; 0.9
+
 pl.xlabel('h')
 pl.ylabel('||e||_2')
 pl.grid()
-
-# calculate best-fit slope on log-log plot
-p=np.polyfit(np.log(h),np.log(error_l2_a),1)
-
-pl.title('h Convergence, p={0}'.format(p[0]))
+pl.title('Convergence')
+pl.legend()
 pl.savefig('cornerflow_convergence.pdf')
+print("***********  convergence figure in cornerflow_convergence.pdf")
 
 # check convergence
-print("***********  order of accuracy p=",p[0])
-print("***********  convergence figure in cornerflow_convergence.pdf")
-assert(p[0] &gt; 0.9)</string_value>
+assert(test_passes)</string_value>
+    </test>
+    <test name="display">
+      <string_value type="code" language="python3" lines="20">import os
+havedisplay = False
+if os.environ.get('PLOT', 0):
+  exitval = os.system('python3 -c "import matplotlib.pyplot as plt; plt.figure()"')
+  havedisplay = (exitval == 0) and "DISPLAY" in os.environ
+
+import matplotlib
+import itertools
+if havedisplay:
+  matplotlib.use('GTK3Agg')
+  import matplotlib.pyplot as plt
+  plt.show()</string_value>
     </test>
   </tests>
 </harness_options>

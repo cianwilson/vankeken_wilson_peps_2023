@@ -69,7 +69,7 @@ ve = as_vector([vre*cos(theta) - vte*sin(theta),
       </ufl_symbol>
       <type name="Function">
         <rank name="Vector" rank="1">
-          <element name="P2">
+          <element name="UserDefined">
             <family>
               <string_value lines="1">CG</string_value>
             </family>
@@ -149,7 +149,7 @@ ve = as_vector([vre*cos(theta) - vte*sin(theta),
       </ufl_symbol>
       <type name="Function">
         <rank name="Scalar" rank="0">
-          <element name="P1">
+          <element name="UserDefined">
             <family>
               <string_value lines="1">CG</string_value>
             </family>
@@ -187,7 +187,7 @@ ve = as_vector([vre*cos(theta) - vte*sin(theta),
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value type="code" language="python3" lines="20">rv = inner(sym(grad(v_t)), sym(grad(v_i)))*dx - div(v_t)*p_i*dx
+          <string_value type="code" language="python3" lines="20">rv = inner(sym(grad(v_t)), 2*sym(grad(v_i)))*dx - div(v_t)*p_i*dx
 rp = -p_t*div(v_i)*dx
 
 r = rv + rp</string_value>

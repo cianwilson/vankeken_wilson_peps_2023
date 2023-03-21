@@ -25,5 +25,10 @@ pytest-3 --disable-warnings $repo/1d_poisson/fenics/poisson.py
 
 tfsimulationharness --test $repo/1d_poisson/tf/poisson.shml
 
+tfsimulationharness --parameters ncells 32 --test $repo/blankenbach/1a-c/blankenbach.shml
+
+tfsimulationharness --parameters ncells 32 --test $repo/blankenbach/2a/blankenbach.shml
+
+tfsimulationharness --parameters ncells 20 ncells 40 ncells 80 --test $repo/cornerflow/cornerflow.shml
 
 
