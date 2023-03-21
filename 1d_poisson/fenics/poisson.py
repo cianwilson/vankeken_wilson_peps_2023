@@ -61,7 +61,7 @@ def test_convergence():
 
     hs = 1./np.array(ncells)/p
 
-    with open('convergence_p{}.csv'.format(p), 'w') as f:
+    with open('1d_poisson_convergence_p{}.csv'.format(p), 'w') as f:
       np.savetxt(f, np.c_[ncells, hs, errors_l2_a], delimiter=',', 
                  header='ncells, hs, l2errs')
 
