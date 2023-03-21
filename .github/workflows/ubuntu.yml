@@ -60,7 +60,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [ "Tests" ]
         include:
 
           - name: "Tests Focal"
