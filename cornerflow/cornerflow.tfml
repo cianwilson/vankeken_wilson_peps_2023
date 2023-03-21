@@ -38,7 +38,6 @@
   <global_parameters>
     <ufl>
       <string_value type="code" language="python3" lines="20">x  = SpatialCoordinate(up_e.cell())
-Te = -0.5*x[0]**2 + x[0]
 theta = atan_2(x[1], x[0])
 radius = (x[0]**2 + x[1]**2)**0.5
 Ue = -U
@@ -188,10 +187,7 @@ ve = as_vector([vre*cos(theta) - vte*sin(theta),
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value type="code" language="python3" lines="20">#rv = sum([inner(grad(v_t[i]), grad(v_i[i])) for i in range(2)])*dx - div(v_t)*p_i*dx
-#rv = inner(sym(grad(v_t)), sym(grad(v_i)))*dx - div(v_t)*p_i*dx
-rv = inner(grad(v_t), grad(v_i))*dx - div(v_t)*p_i*dx
-#rp = inner(grad(p_t), v_i)*dx
+          <string_value type="code" language="python3" lines="20">rv = inner(sym(grad(v_t)), sym(grad(v_i)))*dx - div(v_t)*p_i*dx
 rp = -p_t*div(v_i)*dx
 
 r = rv + rp</string_value>

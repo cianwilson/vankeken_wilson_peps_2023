@@ -44,7 +44,7 @@
       </ufl_symbol>
       <type name="Function">
         <rank name="Scalar" rank="0">
-          <element name="P1">
+          <element name="UserDefined">
             <family>
               <string_value lines="1">CG</string_value>
             </family>
@@ -71,25 +71,13 @@
         <include_in_statistics/>
       </diagnostics>
     </field>
-    <coefficient name="f">
-      <ufl_symbol name="global">
-        <string_value lines="1">f</string_value>
-      </ufl_symbol>
-      <type name="Constant">
-        <rank name="Scalar" rank="0">
-          <value name="WholeMesh" type="value">
-            <constant>
-              <real_value rank="0">1.0</real_value>
-            </constant>
-          </value>
-        </rank>
-      </type>
-      <diagnostics/>
-    </coefficient>
     <nonlinear_solver name="Solver">
       <type name="SNES">
         <form name="Residual" rank="0">
-          <string_value type="code" language="python3" lines="20">r = (inner(grad(T_t),grad(T_i)) - T_t*f)*dx</string_value>
+          <string_value type="code" language="python3" lines="20">x = SpatialCoordinate(uT_e.cell())
+f = (pi**2)*sin(pi*x[0]/2)/4
+
+r = (inner(grad(T_t),grad(T_i)) - T_t*f)*dx</string_value>
           <ufl_symbol name="solver">
             <string_value lines="1">r</string_value>
           </ufl_symbol>
@@ -100,7 +88,7 @@
             <string_value lines="1">J</string_value>
           </ufl_symbol>
         </form>
-        <form_representation name="quadrature"/>
+        <form_representation name="uflacs"/>
         <quadrature_rule name="default"/>
         <snes_type name="ls">
           <ls_type name="cubic"/>
@@ -130,12 +118,12 @@
     </nonlinear_solver>
     <functional name="L2ErrorSquared">
       <string_value type="code" language="python3" lines="20">x  = SpatialCoordinate(uT_e.cell())
-Te = -0.5*x[0]**2 + x[0]
+Te = sin(pi*x[0]/2)
 l2err = (T_i - Te)*(T_i - Te)*dx</string_value>
       <ufl_symbol name="functional">
         <string_value lines="1">l2err</string_value>
       </ufl_symbol>
-      <form_representation name="quadrature"/>
+      <form_representation name="uflacs"/>
       <quadrature_rule name="default"/>
       <include_in_statistics/>
     </functional>
