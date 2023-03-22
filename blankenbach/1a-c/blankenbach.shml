@@ -167,7 +167,7 @@ for values in paramvals:
   variable = variables[key]
   vstring = "{}\t"*2+"{:.4f}\t"*(len(variable.keys())-2)
   print(vstring.format(*[v for v in variable.values()]))
-  vstringcsv = "{}, "*2+"{:.4f}, "*(len(variable.keys())-2)
+  vstringcsv = "{}, "*2+"{}, "*(len(variable.keys())-2)
   f.write(vstringcsv.format(*[v for v in variable.values()])[:-2]+os.linesep)
 
 f.close()</string_value>
