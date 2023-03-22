@@ -12,7 +12,7 @@
   <simulations>
     <simulation name="Solid">
       <input_file>
-        <string_value type="filename" lines="1">subduction_steadystate_linpicard_p2p1p2.tfml</string_value>
+        <string_value type="filename" lines="1">subduction_p2p1p2.tfml</string_value>
       </input_file>
       <run_when name="input_changed_or_output_missing"/>
       <number_processes>
@@ -202,6 +202,15 @@ variables["Vrms_wedge"] = (stat['Stokes']['WedgeRMSSquaredVelocityIntegral']['fu
 qi = det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1].argmax() # max because this is a negated value
 variables["q_surfmin"]  = -det["TemperatureFlux"]["Diffusive_1"]["Surface"][qi,-1]
 variables["x_surfmin"]  = det["Surface"]["position_0"][qi,-1]</string_value>
+        </variable>
+        <variable name="finishtime">
+          <string_value type="code" language="python3" lines="20">import os
+from buckettools.threadlibspud import *
+
+filename = os.path.split(input_filename)[-1]
+threadlibspud.load_options(filename)
+finishtime = libspud.get_option("/timestepping/finish_time")
+threadlibspud.clear_options()</string_value>
         </variable>
       </variables>
     </simulation>

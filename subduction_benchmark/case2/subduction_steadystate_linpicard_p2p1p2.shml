@@ -22,7 +22,7 @@
         <parameter name="resscale">
           <values>
             <string_value lines="1">2.0 1.0 0.5</string_value>
-            <comment>Convergence rate, mm/yr</comment>
+            <comment>Resolution scale (lower -&gt; higher resolution)</comment>
           </values>
           <comment>Convergence rate</comment>
         </parameter>
