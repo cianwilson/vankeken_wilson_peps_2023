@@ -1,0 +1,403 @@
+<?xml version='1.0' encoding='utf-8'?>
+<harness_options>
+  <length>
+    <string_value lines="1">medium</string_value>
+  </length>
+  <owner>
+    <string_value lines="1">cwilson</string_value>
+  </owner>
+  <description>
+    <string_value lines="1">A thermal subduction zone model.</string_value>
+  </description>
+  <simulations>
+    <simulation name="Solid">
+      <input_file>
+        <string_value type="filename" lines="1">subduction_steadystate_linpicard_p2p1p2.tfml</string_value>
+      </input_file>
+      <run_when name="input_changed_or_output_missing"/>
+      <number_processes>
+        <integer_value rank="0">1</integer_value>
+      </number_processes>
+      <parameter_sweep>
+        <parameter name="mu0">
+          <values>
+            <string_value lines="1">0.0</string_value>
+            <comment>Friction coefficient, non-dim</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+libspud.set_option("/system::Temperature/coefficient::FrictionCoefficient/type/rank/value/constant", float(mu0))</string_value>
+            <single_build/>
+          </update>
+          <comment>Friction coefficient</comment>
+        </parameter>
+        <parameter name="rheology">
+          <values>
+            <string_value lines="1">WETQZ</string_value>
+            <comment>A string describing the rheology.  Available options are WETQZ, WETOLV, WESTERLY, SERP, BIOT1, MUSC.</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import json
+with open("../rheologies/rheologies.json", "r") as f:
+  rheologies = json.load(f)
+
+import libspud
+try:
+  rheol = rheologies[rheology]
+except KeyError:
+  raise Exception("Unknown rheology {}.  Available rheologies are: {}.".format(rheology, ", ".join(rheologies.keys())))
+  
+libspud.set_option("/system::Temperature/coefficient::ShearHeatingStressPrefactor/type/rank/value/constant", rheol['A'])
+libspud.set_option("/system::Temperature/coefficient::ShearHeatingActivationEnthalpy/type/rank/value/constant", rheol['E'])
+libspud.set_option("/system::Temperature/coefficient::ShearHeatingActivationVolume/type/rank/value/constant", rheol['V'])
+libspud.set_option("/system::Temperature/coefficient::ShearHeatingStressExponent/type/rank/value/constant", rheol['n'])
+libspud.set_option("/system::Temperature/coefficient::WaterFugacityExponent/type/rank/value/constant", rheol['r'])</string_value>
+            <single_build/>
+          </update>
+          <comment>Rheology</comment>
+        </parameter>
+        <parameter name="Dc">
+          <values>
+            <string_value lines="1">80.0</string_value>
+            <comment>Coupling depth, km</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/system::Stokes/coefficient::CouplingDepth/type/rank/value/constant", float(Dc))</string_value>
+            <single_build/>
+          </update>
+          <comment>Coupling depth</comment>
+        </parameter>
+        <parameter name="minres">
+          <values>
+            <string_value lines="1">2.0</string_value>
+          </values>
+          <comment>resolution scale</comment>
+        </parameter>
+      </parameter_sweep>
+      <required_input>
+        <filenames name="thickness">
+          <string>
+            <string_value type="filename" lines="1">sediment_thickness.py</string_value>
+          </string>
+        </filenames>
+      </required_input>
+      <dependencies>
+        <run name="Mesh">
+          <input_file>
+            <string_value type="filename" lines="1">subduction.smml</string_value>
+            <spud_file/>
+          </input_file>
+          <run_when name="input_changed_or_output_missing"/>
+          <parameter_sweep>
+            <parameter name="Dc">
+              <update>
+                <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/domain/location::PartialCouplingDepth/depth", float(Dc))
+libspud.set_option("/domain/location::CouplingDepth/depth", float(Dc)+2.5)
+libspud.set_option("/domain/location::MaxFluidDepth/depth", float(Dc)+20.0)</string_value>
+              </update>
+            </parameter>
+            <parameter name="minres">
+              <update>
+                <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/mesh/resolution_scale", float(minres))</string_value>
+              </update>
+            </parameter>
+          </parameter_sweep>
+          <required_output>
+            <filenames name="Mesh">
+              <python>
+                <string_value type="code" language="python3" lines="20">Mesh = ['subduction'+ext for ext in ['.xdmf', '.h5', '_facet_ids.xdmf', '_facet_ids.h5', '_cell_ids.xdmf', '_cell_ids.h5']]</string_value>
+              </python>
+            </filenames>
+            <filenames name="Slab">
+              <string>
+                <string_value type="filename" lines="1">subduction.slab</string_value>
+              </string>
+            </filenames>
+          </required_output>
+          <commands>
+            <command name="Generate">
+              <string_value lines="1">generate_subduction_geometry subduction.smml</string_value>
+            </command>
+            <command name="GMsh">
+              <string_value lines="1">gmsh -2 -algo meshadapt subduction.geo</string_value>
+            </command>
+            <command name="Convert">
+              <string_value lines="1">tfgmsh2xdmf subduction.msh</string_value>
+            </command>
+          </commands>
+        </run>
+      </dependencies>
+      <variables>
+        <variable name="det">
+          <string_value type="code" language="python3" lines="20">from buckettools.statfile import parser
+import os
+from buckettools.threadlibspud import *
+import json
+import csv
+
+filename = os.path.split(input_filename)[-1]
+threadlibspud.load_options(filename)
+basename = libspud.get_option("/io/output_base_name")
+threadlibspud.clear_options()
+det = parser(basename+".det")
+
+slab_x = det['SlabLayer98']['position_0'][:,-1] 
+slab_y = det['SlabLayer98']['position_1'][:,-1]
+slab_T = det['Temperature']['Temperature']['SlabLayer98'][:,-1]
+tau_n  = det['SlabStress']['Normal']['SlabLayer98'][:,-1]
+tau_t  = det['SlabStress']['Tangential']['SlabLayer98'][:,-1]
+tau_sh = det['SlabStress']['ShearHeating']['SlabLayer98'][:,-1]
+surface_x = det['Surface']['position_0'][:,-1]
+surface_y = det['Surface']['position_1'][:,-1]
+surface_q = -det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1]
+
+results = {k:v for k,v in _self.optionsdict["values"].items()}
+
+results.update({
+           "slab_x" : slab_x.tolist(),
+           "slab_y" : slab_y.tolist(),
+           "slab_T" : slab_T.tolist(),
+           "tau_n"  : tau_n.tolist(),
+           "tau_t"  : tau_t.tolist(),
+           "tau_sh" : tau_sh.tolist(),
+           "surface_x" : surface_x.tolist(),
+           "surface_y" : surface_y.tolist(),
+           "surface_q" : surface_q.tolist()
+          })
+
+with open('slab_T.tsv', 'w') as f:
+  csv.writer(f, delimiter='\t').writerows(zip(results['slab_x'], results['slab_y'], results['slab_T']))
+with open('surface_q.tsv', 'w') as f:
+  csv.writer(f, delimiter='\t').writerows(zip(results['surface_x'], results['surface_y'], results['surface_q']))
+
+layer_names = [str(name) for name in range(88, 113)]
+for name in layer_names:
+  results['slab_x_'+name] = det['SlabLayer'+name]['position_0'][:,-1].tolist()
+  results['slab_y_'+name] = det['SlabLayer'+name]['position_1'][:,-1].tolist()
+  results['slab_T_'+name] = det['Temperature']['Temperature']['SlabLayer'+name][:,-1].tolist()
+  with open('slab_T_'+name+'.tsv', 'w') as f:
+    csv.writer(f, delimiter='\t').writerows(zip(results['slab_x_'+name], results['slab_y_'+name], results['slab_T_'+name]))
+
+with open(basename+".json", 'w') as f:
+  json.dump(results, f, indent=4, separators=(",", ": "))</string_value>
+        </variable>
+        <variable name="errfile">
+          <string_value type="code" language="python3" lines="20">import os
+err = open("terraferma.err-0", 'r')
+
+print(err.read())
+err.seek(0)
+
+linecount = -1
+errfile = []
+for line in err.readlines():
+  if not line.startswith("WARNING:") and not line.startswith(os.linesep):
+    if line.startswith("*** WARNING:"):
+      linecount = 0
+    elif linecount &gt;= 0:
+      if line.startswith("-----------"):
+        linecount += 1
+      if linecount == 2:
+        linecount = -1
+    else:
+      errfile.append(line)
+
+err.close()</string_value>
+        </variable>
+        <variable name="dofcount">
+          <string_value type="code" language="python3" lines="20">import dolfin
+import numpy as np
+
+mesh = dolfin.Mesh()
+dolfin.XDMFFile("subduction.xdmf").read(mesh)
+mesh.init()
+cellfunc = dolfin.MeshFunction("size_t", mesh, mesh.topology().dim())
+dolfin.XDMFFile("subduction_cell_ids.xdmf").read(cellfunc)
+cellmarkerarray = cellfunc.array()
+cell2vertex = mesh.topology()(2,0)
+cell2facet  = mesh.topology()(2,1)
+
+dofcount = {}
+dofcount["elements_crust"] = sum(cellmarkerarray==1)+sum(cellmarkerarray==2)
+dofcount["elements_wedge"] = sum(cellmarkerarray==3)+sum(cellmarkerarray==4)
+dofcount["elements_slab"]  = sum(cellmarkerarray==5)
+
+vertices_crust = set()
+vertices_wedge = set()
+vertices_slab = set()
+facets_crust = set()
+facets_wedge = set()
+facets_slab = set()
+for cell in dolfin.cells(mesh):
+  ci = cell.index()
+  cid = cellfunc[ci]
+  if cid == 1 or cid == 2:
+    vertices_crust.update(cell2vertex(ci))
+    facets_crust.update(cell2facet(ci))
+  if cid == 3 or cid == 4:
+    vertices_wedge.update(cell2vertex(ci))
+    facets_wedge.update(cell2facet(ci))
+  if cid == 5:
+    vertices_slab.update(cell2vertex(ci))
+    facets_slab.update(cell2facet(ci))
+
+dofcount["vertices_crust"] = len(vertices_crust)
+dofcount["vertices_wedge"] = len(vertices_wedge)
+dofcount["vertices_slab"]  = len(vertices_slab)
+
+dofcount["facets_crust"] = len(facets_crust)
+dofcount["facets_wedge"] = len(facets_wedge)
+dofcount["facets_slab"]  = len(facets_slab)
+
+dofcount["T"] = mesh.num_vertices() + mesh.num_facets()
+dofcount["v"] = (dofcount["vertices_wedge"] + dofcount["facets_wedge"])*2
+dofcount["p"] = dofcount["vertices_wedge"]
+dofcount["vp"] = (dofcount["vertices_slab"] + dofcount["facets_slab"])*2
+dofcount["pp"] = dofcount["vertices_slab"]</string_value>
+        </variable>
+      </variables>
+    </simulation>
+  </simulations>
+  <tests>
+    <test name="errors">
+      <string_value type="code" language="python3" lines="20">import sys
+import itertools
+noerrors = True
+
+params = list(errfile.parameters.keys())
+
+for values in itertools.product(*errfile.parameters.values()):
+  label = ", ".join(["{} = {}".format(params[i], v) for i,v in enumerate(values) if len(errfile.parameters[params[i]])&gt;1])
+  key = {params[i]:v for i,v in enumerate(values)}
+  if len(errfile[key]) &gt; 0:
+    print("ERROR: unexpected output in terraferma.err-0!")
+    print(errfile[key])
+    for line in errfile[key]:
+      print(line)
+      sys.stdout.write(line)
+    noerrors = False
+
+assert(noerrors)</string_value>
+    </test>
+    <test name="plot">
+      <string_value type="code" language="python3" lines="20">import os
+havedisplay = False
+if os.environ.get('PLOT', 0):
+  exitval = os.system('python3 -c "import matplotlib.pyplot as plt; plt.figure()"')
+  havedisplay = (exitval == 0) and "DISPLAY" in os.environ
+
+import matplotlib
+if havedisplay:
+  matplotlib.use('GTK3Agg')
+else:
+  matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+import itertools
+
+params = list(det.parameters.keys())
+figT = plt.figure()
+axT = figT.gca()
+figq = plt.figure()
+axq = figq.gca()
+for values in itertools.product(*det.parameters.values()):
+  label = ", ".join(["{} = {}".format(params[i], v) for i,v in enumerate(values) if len(det.parameters[params[i]])&gt;1])
+  key = {params[i]:v for i,v in enumerate(values)}
+  z = -det[key]['SlabLayer98']['position_1'][:,-1]
+  T = det[key]['Temperature']['Temperature']['SlabLayer98'][:,-1]
+  axT.plot(T, z, linewidth=2, label=label)
+  z40 = (abs(z - 40)).argmin()
+  print("T(z={}): ".format(z[z40])+label+": {}".format(T[z40]))
+  x = det[key]['Surface']['position_0'][:,-1]
+  q = -det[key]['TemperatureFlux']['Diffusive_1']['Surface'][:,-1]
+  axq.plot(x, q, linewidth=2, label=label)
+
+axT.legend()
+axT.set_ylim([0.0, 150.0])
+axT.set_xlabel(r"$T$ ($^\circ$C)")
+axT.set_ylabel(r"$z$ (km)")
+axq.legend()
+axq.set_xlabel(r"$x$ (km)")
+axq.set_ylabel(r"$q_z$ (W/m$^2$)")
+figT.savefig("subduction_T.png")
+figq.savefig("subduction_q.png")</string_value>
+    </test>
+    <test name="display">
+      <string_value type="code" language="python3" lines="20">import os
+havedisplay = False
+if os.environ.get('PLOT', 0):
+  exitval = os.system('python3 -c "import matplotlib.pyplot as plt; plt.figure()"')
+  havedisplay = (exitval == 0) and "DISPLAY" in os.environ
+
+import matplotlib
+import itertools
+if havedisplay:
+  matplotlib.use('GTK3Agg')
+  import matplotlib.pyplot as plt
+  plt.show()</string_value>
+    </test>
+    <test name="print">
+      <string_value type="code" language="python3" lines="20">import itertools
+
+params = list(det.parameters.keys())
+
+formatstring = "  (%.2f, %.2f): %f"
+formatstringT = "%f"
+formatstringx = "%.2f"
+
+def printTs(det: dict, points: str):
+  print("")
+  print(points)
+  xs = det[points]["position_0"][:,ti]
+  ys = det[points]["position_1"][:,ti]
+  Ts = det["Temperature"]["Temperature"][points][:,ti]
+  print("")
+  for i, T in enumerate(Ts):
+    print((formatstring%(xs[i], ys[i], T)))
+  print("")
+  for i, T in enumerate(Ts):
+    print((formatstringx%(xs[i])))
+  print("")
+  for i, T in enumerate(Ts):
+    print((formatstringx%(ys[i])))
+  print("")
+  for i, T in enumerate(Ts):
+    print((formatstringT%(T)))
+  print("")
+
+print("")
+print("Temperatures along slab:")
+
+for values in itertools.product(*det.parameters.values()):
+  label = ", ".join(["{} = {}".format(params[i], v) for i,v in enumerate(values) if len(det.parameters[params[i]])&gt;1])
+  key = {params[i]:v for i,v in enumerate(values)}
+  ti = -1
+
+  if(len(label)&gt;0): print(label)
+
+  printTs(det[key], "SlabControlPoints")
+  printTs(det[key], "SlabPoints")
+
+  print("Dofcounts:")
+  print((" v  : %d"%dofcount[key]["v"]))
+  print((" p  : %d"%dofcount[key]["p"]))
+  print((" vp : %d"%dofcount[key]["vp"]))
+  print((" pp : %d"%dofcount[key]["pp"]))
+  print((" T  : %d"%dofcount[key]["T"]))
+  print("")
+  
+  print(("%d"%dofcount[key]["v"]))
+  print(("%d"%dofcount[key]["p"]))
+  print(("%d"%dofcount[key]["vp"]))
+  print(("%d"%dofcount[key]["pp"]))
+  print(("%d"%dofcount[key]["T"]))
+  print("")</string_value>
+    </test>
+  </tests>
+</harness_options>

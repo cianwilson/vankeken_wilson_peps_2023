@@ -1,0 +1,1927 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<terraferma_options>
+    <geometry>
+        <dimension>
+            <integer_value rank="0">2</integer_value>
+        </dimension>
+        <mesh name="Mesh">
+            <source name="File">
+                <file>
+                    <string_value type="filename" lines="1">subduction</string_value>
+                </file>
+                <cell>
+                    <string_value lines="1">triangle</string_value>
+                </cell>
+            </source>
+        </mesh>
+    </geometry>
+    <io>
+        <output_base_name>
+            <string_value lines="1">subduction_solid</string_value>
+        </output_base_name>
+        <visualization>
+            <element name="P1">
+                <family>
+                    <string_value lines="1">CG</string_value>
+                </family>
+                <degree>
+                    <integer_value rank="0">1</integer_value>
+                </degree>
+            </element>
+        </visualization>
+        <dump_periods>
+            <visualization_period>
+                <real_value rank="0">94.8640581818182</real_value>
+                <comment>non-dim&#x0A;&#x0A;t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
+            </visualization_period>
+            <statistics_period>
+                <real_value rank="0">94.8640581818182</real_value>
+                <comment>non-dim&#x0A;&#x0A;t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
+            </statistics_period>
+            <detectors_period>
+                <real_value rank="0">94.8640581818182</real_value>
+            </detectors_period>
+        </dump_periods>
+        <detectors>
+            <array name="Trench">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  global slab&#x0A;  import numpy as np&#x0A;  x0 = slab.x[0]&#x0A;  y0 = slab.y[0]&#x0A;  yf = slab.y[-1]&#x0A;  ys = np.arange(y0, yf, -1.)&#x0A;  coords = [(x0, y) for y in ys]&#x0A;  return coords</string_value>
+                </python>
+            </array>
+            <array name="Surface">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  global slab&#x0A;  import numpy as np&#x0A;  x0 = slab.x[0]&#x0A;  y0 = slab.y[0]&#x0A;  xf = slab.x[-1]&#x0A;  xs = np.arange(x0, xf, 1.)&#x0A;  coords = [(x, max(min(y0*(1.0-x/slab.coastdistance), 0.0), y0)-1.e-8) for x in xs]&#x0A;  return coords</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer88">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;88&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer89">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;89&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer90">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;90&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer91">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;91&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer92">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;92&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer93">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;93&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer94">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;94&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer95">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;95&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer96">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;96&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer97">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;97&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer98">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;98&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer99">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;99&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer100">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;100&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer101">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;101&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer102">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;102&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer103">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;103&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer104">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;104&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer105">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;105&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer106">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;106&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer107">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;107&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer108">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;108&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer109">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;109&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer110">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;110&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer111">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;111&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabLayer112">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  factor, offset = layers[&apos;112&apos;]&#x0A;  nscoords = scoords + (factor*ssthicks + offset)*snormals&#x0A;  nmask = (nscoords[0,:] &gt;= x0) &amp; (nscoords[0,:] &lt;= xf) &amp; (nscoords[1,:] &lt;= y0) &amp; (nscoords[1,:] &gt;= yf)&#x0A;  return nscoords[:,nmask].transpose()</string_value>
+                </python>
+            </array>
+            <array name="SlabControlPoints">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  global slab&#x0A;  coords = []&#x0A;  for p in slab.controlpoints:&#x0A;    coords.append([p.x, p.y])&#x0A;  return coords</string_value>
+                </python>
+            </array>
+            <array name="SlabPoints">
+                <python>
+                    <string_value type="code" language="python3" lines="20">def val():&#x0A;  global slab&#x0A;  coords = []&#x0A;  for p in slab.points:&#x0A;    coords.append([p.x, p.y])&#x0A;  return coords</string_value>
+                </python>
+            </array>
+        </detectors>
+    </io>
+    <nonlinear_systems>
+        <relative_error>
+            <real_value rank="0">5e-06</real_value>
+        </relative_error>
+        <absolute_error>
+            <real_value rank="0">5e-09</real_value>
+        </absolute_error>
+        <max_iterations>
+            <integer_value rank="0">100</integer_value>
+        </max_iterations>
+        <monitors></monitors>
+        <never_ignore_convergence_failures></never_ignore_convergence_failures>
+    </nonlinear_systems>
+    <global_parameters>
+        <ufl>
+            <string_value type="code" language="python3" lines="20">e0 = v0/h/365.25/24/60/60 # 1/s&#x0A;&#x0A;x = SpatialCoordinate(us_e.cell())&#x0A;deltazsurface = Min(Max(deltaztrench*(1. - x[0]/deltaxcoast), 0.), deltaztrench)&#x0A;z = -(x[1]+deltazsurface)&#x0A;&#x0A;Tdim = Ts + T0*T + 0.3*z&#x0A;Tdim_i = Ts + T0*T_i + 0.3*z&#x0A;nexp = (n-1.)/n&#x0A;&#x0A;# wedge viscosity:&#x0A;edot = sym(grad(v))&#x0A;eII = sqrt(0.5*inner(edot, edot))&#x0A;# inverse dimensionless dislocation creep viscosity&#x0A;inv_etadisl = eta0*invAdisl*exp(-Edisl/(n*R*Tdim))*(e0**nexp)*(eII**nexp)&#x0A;# inverse dimensionless effective viscosity&#x0A;inv_etaprime = inv_etadisl + eta0/etamax&#x0A;# &quot;harmonic mean&quot; viscosity (actually twice the harmonic mean)&#x0A;etaprime = 1./inv_etaprime&#x0A;&#x0A;# slab viscosity:&#x0A;edotp = sym(grad(vp))&#x0A;eIIp = sqrt(0.5*inner(edotp, edotp))&#x0A;# inverse dimensionless dislocation creep viscosity&#x0A;inv_etadislp = eta0*invAdisl*exp(-Edisl/(n*R*Tdim))*(e0**nexp)*(eIIp**nexp)&#x0A;# inverse dimensionless effective viscosity&#x0A;inv_etaprimep = inv_etadislp + eta0/etamax&#x0A;# &quot;harmonic mean&quot; viscosity (actually twice the harmonic mean)&#x0A;etaprimep = 1./inv_etaprimep&#x0A;&#x0A;# shear heating&#x0A;plith = rho0*g*h*conditional(lt(z, deltazuc+deltazlc-deltazsurface), rhoc*z, rhoc*(deltazuc+deltazlc-deltazsurface) + rhom*(z-(deltazuc+deltazlc-deltazsurface)))&#x0A;tauf = mu0*plith/tau0&#x0A;&#x0A;Af1dim = Af1*1.e6  # MPa -&gt; Pa&#x0A;Af2dim = Af2*1.e3  # kJ/mol -&gt; J/mol&#x0A;&#x0A;fh2o = ah2o*Af1dim*exp(-(Af2dim + plith*Af3)/(R*Tdim))&#x0A;fh2o_i = ah2o*Af1dim*exp(-(Af2dim + plith*Af3)/(R*Tdim_i))&#x0A;&#x0A;Ashdim = Ash*(1.e6**-(rsh+nsh)) # MPa^-(rsh+nsh) s^-1 -&gt; Pa^-(rsh+nsh) s^-1&#x0A;Eshdim = Esh*1.e3 # kJ/mol -&gt; J/mol&#x0A;&#x0A;cdw = 2.5&#x0A;deltav = (1.0 - Min(Max(-(x[1] + cd)/cdw, 0.0), 1.0))*vconv/v0&#x0A;&#x0A;tauv_i = 0.5*((Ashdim**(-1./nsh))*((e0*h*deltav/wsh)**(1./nsh))*(fh2o_i**(-rsh/nsh))*exp((Eshdim+plith*Vsh)/(nsh*R*Tdim_i)))/tau0&#x0A;tau_i = tauv_i*tanh(tauf/tauv_i)&#x0A;&#x0A;# Domain information:&#x0A;dx_uppercrust = dx(1)&#x0A;dx_lowercrust = dx(2)&#x0A;dx_crust = dx_uppercrust + dx_lowercrust&#x0A;dx_wedgefluid = dx(3)&#x0A;dx_wedgeright = dx(4)&#x0A;dx_wedge = dx_wedgefluid + dx_wedgeright&#x0A;dx_slab = dx(5)&#x0A;dS_slabsh = dS((1,2))&#x0A;dS_slab = dS((1,2,3,4))</string_value>
+        </ufl>
+        <python>
+            <string_value type="code" language="python3" lines="20">import pickle&#x0A;import numpy as np&#x0A;&#x0A;# slab file&#x0A;f = open(&quot;subduction.slab&quot;, &apos;rb&apos;)&#x0A;slab = pickle.load(f)&#x0A;f.close()&#x0A;&#x0A;# bounding box&#x0A;x0 = slab.x[0]&#x0A;y0 = slab.y[0]&#x0A;xf = slab.x[-1]&#x0A;yf = slab.y[-1]&#x0A;&#x0A;# vertices&#x0A;scoords = [(slab.interpcurves[0].points[0].x, slab.interpcurves[0].points[0].y)]&#x0A;scoords += [(curve.points[-1].x, curve.points[-1].y) for curve in slab.interpcurves]&#x0A;scoords = np.asarray(scoords).transpose()  # transpose now to avoid some issues later&#x0A;&#x0A;# normals&#x0A;snormals = np.stack([-slab.cs(scoords[0,:], nu=1), np.ones(scoords.shape[1])], axis=0)&#x0A;snormags = np.sqrt(np.sum(snormals**2, axis=0))&#x0A;snormals = snormals/snormags&#x0A;&#x0A;# sediment thicknesses&#x0A;import sediment_thickness as st&#x0A;z0 = st.z0&#x0A;z15 = st.z15&#x0A;y = scoords[1,:]&#x0A;ssthicks = np.where(y&gt;y0, z0, np.where(y&lt;-15, z15, (z0-z15)*(y-y0)/(y0+15) + z0))&#x0A;&#x0A;# set up layers&#x0A;layer_names = [str(name) for name in range(88, 113)]&#x0A;layer_factors = [0.0]*11 + [-0.5] + [-1.0]*13&#x0A;layer_offsets = np.arange(9.5, 0.0, -1).tolist() + [0.0]*3 + [-0.15, -0.45, -1.4] + np.arange(-2.5, -11, -1).tolist()&#x0A;layers = {layer_names[i]:(layer_factors[i], layer_offsets[i]) for i in range(len(layer_names))}</string_value>
+        </python>
+    </global_parameters>
+    <system name="Stokes">
+        <mesh name="Mesh"></mesh>
+        <ufl_symbol name="global">
+            <string_value lines="1">us</string_value>
+        </ufl_symbol>
+        <field name="Velocity">
+            <ufl_symbol name="global">
+                <string_value lines="1">v</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Vector" rank="1">
+                    <element name="P2">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">2</integer_value>
+                        </degree>
+                    </element>
+                    <boundary_condition name="WedgeTop">
+                        <boundary_ids>
+                            <integer_value rank="1" shape="2">10 11</integer_value>
+                        </boundary_ids>
+                        <sub_components name="All">
+                            <type name="Dirichlet" type="boundary_condition">
+                                <constant name="dim">
+                                    <real_value rank="1" shape="2" dim1="dim">0 0</real_value>
+                                </constant>
+                            </type>
+                        </sub_components>
+                    </boundary_condition>
+                    <boundary_condition name="Slab">
+                        <boundary_ids>
+                            <integer_value rank="1" shape="4">1 2 3 4</integer_value>
+                        </boundary_ids>
+                        <sub_components name="All">
+                            <type name="Dirichlet" type="boundary_condition">
+                                <cpp rank="1">
+                                    <members>
+                                        <string_value type="code" language="cpp" lines="20">GenericFunction_ptr slabt_ptr;&#x0A;double vconv, v0, cd;</string_value>
+                                    </members>
+                                    <initialization>
+                                        <string_value type="code" language="cpp" lines="20">slabt_ptr = system()-&gt;fetch_coeff(&quot;SlabUnitTangent&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr v0_ptr = system()-&gt;fetch_coeff(&quot;VelocityScale&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr vconv_ptr = system()-&gt;fetch_coeff(&quot;ConvergenceSpeed&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr cd_ptr = system()-&gt;fetch_coeff(&quot;CouplingDepth&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;v0 = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(v0_ptr));&#x0A;vconv = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(vconv_ptr));&#x0A;cd = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(cd_ptr));</string_value>
+                                    </initialization>
+                                    <eval>
+                                        <string_value type="code" language="cpp" lines="20">slabt_ptr-&gt;eval(values, x, cell);&#x0A;&#x0A;for (int i = 0; i &lt; values.size(); ++i)&#x0A;{&#x0A;  values[i] = std::min(std::max(-(x[1]+cd)/2.5, 0.0), 1.0)*vconv*values[i]/v0;&#x0A;}</string_value>
+                                    </eval>
+                                </cpp>
+                            </type>
+                        </sub_components>
+                    </boundary_condition>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_visualization></include_in_visualization>
+                <include_in_statistics></include_in_statistics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <field name="Pressure">
+            <ufl_symbol name="global">
+                <string_value lines="1">p</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_visualization></include_in_visualization>
+                <include_in_statistics></include_in_statistics>
+            </diagnostics>
+        </field>
+        <field name="SlabVelocity">
+            <ufl_symbol name="global">
+                <string_value lines="1">vp</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Vector" rank="1">
+                    <element name="P2">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">2</integer_value>
+                        </degree>
+                    </element>
+                    <boundary_condition name="Slab">
+                        <boundary_ids>
+                            <integer_value rank="1" shape="4">1 2 3 4</integer_value>
+                        </boundary_ids>
+                        <sub_components name="All">
+                            <type name="Dirichlet" type="boundary_condition">
+                                <cpp rank="1">
+                                    <members>
+                                        <string_value type="code" language="cpp" lines="20">GenericFunction_ptr slabt_ptr;&#x0A;double vconv, v0;</string_value>
+                                    </members>
+                                    <initialization>
+                                        <string_value type="code" language="cpp" lines="20">slabt_ptr = system()-&gt;fetch_coeff(&quot;SlabUnitTangent&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr v0_ptr = system()-&gt;fetch_coeff(&quot;VelocityScale&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr vconv_ptr = system()-&gt;fetch_coeff(&quot;ConvergenceSpeed&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;v0 = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(v0_ptr));&#x0A;vconv = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(vconv_ptr));</string_value>
+                                    </initialization>
+                                    <eval>
+                                        <string_value type="code" language="cpp" lines="20">slabt_ptr-&gt;eval(values, x, cell);&#x0A;&#x0A;for (int i = 0; i &lt; values.size(); ++i)&#x0A;{&#x0A;  values[i] = vconv*values[i]/v0;&#x0A;}</string_value>
+                                    </eval>
+                                </cpp>
+                            </type>
+                        </sub_components>
+                    </boundary_condition>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_visualization></include_in_visualization>
+                <include_in_statistics></include_in_statistics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <field name="SlabPressure">
+            <ufl_symbol name="global">
+                <string_value lines="1">pp</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_visualization></include_in_visualization>
+                <include_in_statistics></include_in_statistics>
+            </diagnostics>
+        </field>
+        <coefficient name="ConvergenceSpeed">
+            <ufl_symbol name="global">
+                <string_value lines="1">vconv</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.071</real_value>
+                            <comment>m/yr</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="TrenchDepth">
+            <ufl_symbol name="global">
+                <string_value lines="1">deltaztrench</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">6</real_value>
+                            <comment>non-dim&#x0A;&#x0A;h = 1.e3 m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="CoastDistance">
+            <ufl_symbol name="global">
+                <string_value lines="1">deltaxcoast</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">155</real_value>
+                            <comment>non-dim&#x0A;&#x0A;h = 1.e3 m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="UpperCrustThickness">
+            <ufl_symbol name="global">
+                <string_value lines="1">deltazuc</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">15</real_value>
+                            <comment>non-dim&#x0A;&#x0A;h = 1.e3 m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="LowerCrustThickness">
+            <ufl_symbol name="global">
+                <string_value lines="1">deltazlc</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">15</real_value>
+                            <comment>non-dim&#x0A;&#x0A;h = 1.e3 m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="LengthScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">h</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1000</real_value>
+                            <comment>m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="VelocityScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">v0</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.0237160145454545</real_value>
+                            <comment>m/yr&#x0A;&#x0A;v0 = k0/rho0/cp0/h</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+            <comment>The convergence speed.</comment>
+        </coefficient>
+        <coefficient name="ViscosityScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">eta0</string_value>
+                <comment>eta_inf in Kelemen et al.</comment>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1e+21</real_value>
+                            <comment>Pas</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ViscosityCap">
+            <ufl_symbol name="global">
+                <string_value lines="1">etamax</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1e+25</real_value>
+                            <comment>Pas</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ViscosityInversePreFactorDislocation">
+            <ufl_symbol name="global">
+                <string_value lines="1">invAdisl</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">3.45201355950926e-05</real_value>
+                            <comment>1./[28968.6 Pas^(1/n)]</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ViscosityActivationEnergyDislocation">
+            <ufl_symbol name="global">
+                <string_value lines="1">Edisl</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">540000</real_value>
+                            <comment>J/mol</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ViscosityStressExponentDislocation">
+            <ufl_symbol name="global">
+                <string_value lines="1">n</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">3.5</real_value>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="GasConstant">
+            <ufl_symbol name="global">
+                <string_value lines="1">R</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">8.3145</real_value>
+                            <comment>J/mol/K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="VelocityTheta">
+            <ufl_symbol name="global">
+                <string_value lines="1">thetav</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.5</real_value>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="SolidCourantNumber">
+            <ufl_symbol name="global">
+                <string_value lines="1">sc</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P0">
+                        <family>
+                            <string_value lines="1">DG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">0</integer_value>
+                        </degree>
+                    </element>
+                    <value name="Wedge" type="value">
+                        <region_ids>
+                            <integer_value rank="1" shape="2">3 4</integer_value>
+                        </region_ids>
+                        <cpp rank="0">
+                            <members>
+                                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr v;&#x0A;&#x0A;mutable double v_max, dt;</string_value>
+                            </members>
+                            <initialization>
+                                <string_value type="code" language="cpp" lines="20">v = system()-&gt;fetch_field(&quot;Velocity&quot;)-&gt;genericfunction_ptr(time());</string_value>
+                            </initialization>
+                            <eval>
+                                <string_value type="code" language="cpp" lines="20">const dolfin::Cell dcell((*system()-&gt;mesh()), cell.index);&#x0A;dolfin::Array&lt;double&gt; v_values(2);&#x0A;v-&gt;eval(v_values, x, cell);&#x0A;v_max = std::max(std::abs(v_values[0]),std::abs(v_values[1]));&#x0A;dt = bucket()-&gt;timestep();&#x0A;values[0] = (v_max*dt)/(2*dcell.circumradius());</string_value>
+                            </eval>
+                        </cpp>
+                    </value>
+                    <value name="Slab" type="value">
+                        <region_ids>
+                            <integer_value rank="1" shape="1">5</integer_value>
+                        </region_ids>
+                        <cpp rank="0">
+                            <members>
+                                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr v;&#x0A;&#x0A;mutable double v_max, dt;</string_value>
+                            </members>
+                            <initialization>
+                                <string_value type="code" language="cpp" lines="20">v = system()-&gt;fetch_field(&quot;SlabVelocity&quot;)-&gt;genericfunction_ptr(time());</string_value>
+                            </initialization>
+                            <eval>
+                                <string_value type="code" language="cpp" lines="20">const dolfin::Cell dcell((*system()-&gt;mesh()), cell.index);&#x0A;dolfin::Array&lt;double&gt; v_values(2);&#x0A;v-&gt;eval(v_values, x, cell);&#x0A;v_max = std::max(std::abs(v_values[0]),std::abs(v_values[1]));&#x0A;dt = bucket()-&gt;timestep();&#x0A;values[0] = (v_max*dt)/(2*dcell.circumradius());</string_value>
+                            </eval>
+                        </cpp>
+                    </value>
+                    <value name="Crust" type="value">
+                        <region_ids>
+                            <integer_value rank="1" shape="2">1 2</integer_value>
+                        </region_ids>
+                        <constant>
+                            <real_value rank="0">0</real_value>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_statistics></include_in_statistics>
+            </diagnostics>
+        </coefficient>
+        <coefficient name="SlabUnitTangent">
+            <ufl_symbol name="global">
+                <string_value lines="1">slabt</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Vector" rank="1">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                    <value name="WholeMesh" type="value">
+                        <python rank="1">
+                            <string_value type="code" language="python3" lines="20">def val(x):&#x0A;  global slab, gmshtools&#x0A;  try:&#x0A;    return slab.unittangentx(x[0])&#x0A;  except AssertionError:&#x0A;    return [0.0,0.0]</string_value>
+                        </python>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="CouplingDepth">
+            <ufl_symbol name="global">
+                <string_value lines="1">cd</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">80</real_value>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <nonlinear_solver name="IsoviscousStokes">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">vvar = v_i&#x0A;pvar = p_i&#x0A;vpvar = vp_i&#x0A;ppvar = pp_i&#x0A;&#x0A;bv = inner(sym(grad(v_t)), 2*sym(grad(vvar))) - div(v_t)*pvar&#x0A;&#x0A;r = bv*dx_wedge&#x0A;&#x0A;bp = p_t*div(vvar)&#x0A;&#x0A;r += bp*dx_wedge&#x0A;&#x0A;bvp = inner(sym(grad(vp_t)), 2*sym(grad(vpvar))) - div(vp_t)*ppvar&#x0A;&#x0A;r += bvp*dx_slab&#x0A;&#x0A;bpp = pp_t*div(vpvar)&#x0A;&#x0A;r += bpp*dx_slab</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J=derivative(r,us_i,us_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">6</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-10</real_value>
+                </relative_error>
+                <absolute_error>
+                    <real_value rank="0">1e-15</real_value>
+                </absolute_error>
+                <max_iterations>
+                    <integer_value rank="0">50</integer_value>
+                </max_iterations>
+                <monitors>
+                    <view_snes></view_snes>
+                    <residual></residual>
+                </monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="fieldsplit">
+                        <composite_type name="additive"></composite_type>
+                        <fieldsplit name="Stokes">
+                            <field name="Velocity">
+                                <region_ids>
+                                    <integer_value rank="1" shape="2">3 4</integer_value>
+                                </region_ids>
+                            </field>
+                            <field name="Pressure">
+                                <region_ids>
+                                    <integer_value rank="1" shape="2">3 4</integer_value>
+                                </region_ids>
+                            </field>
+                            <field name="SlabVelocity">
+                                <region_ids>
+                                    <integer_value rank="1" shape="1">5</integer_value>
+                                </region_ids>
+                            </field>
+                            <field name="SlabPressure">
+                                <region_ids>
+                                    <integer_value rank="1" shape="1">5</integer_value>
+                                </region_ids>
+                            </field>
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="lu">
+                                    <factorization_package name="mumps"></factorization_package>
+                                </preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                        <fieldsplit name="EverythingElse">
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="none"></preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="at_start"></solve>
+        </nonlinear_solver>
+        <nonlinear_solver name="LinearizedPicard">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">Tvar = T_i&#x0A;vvar = v_i&#x0A;pvar = p_i&#x0A;vpvar = vp_i&#x0A;ppvar = pp_i&#x0A;&#x0A;bv = inner(sym(grad(v_t)), 2*etaprime*sym(grad(vvar))) - div(v_t)*pvar&#x0A;&#x0A;r = bv*dx_wedge&#x0A;&#x0A;bp = p_t*div(vvar)&#x0A;&#x0A;r += bp*dx_wedge&#x0A;&#x0A;bvp = inner(sym(grad(vp_t)), 2*etaprimep*sym(grad(vpvar))) - div(vp_t)*ppvar&#x0A;&#x0A;r += bvp*dx_slab&#x0A;&#x0A;bpp = pp_t*div(vpvar)&#x0A;&#x0A;r += bpp*dx_slab</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J=derivative(r,us_i,us_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">6</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ksponly"></snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-10</real_value>
+                </relative_error>
+                <absolute_error>
+                    <real_value rank="0">1e-10</real_value>
+                </absolute_error>
+                <max_iterations>
+                    <integer_value rank="0">50</integer_value>
+                </max_iterations>
+                <monitors>
+                    <view_snes></view_snes>
+                    <residual></residual>
+                </monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="fieldsplit">
+                        <composite_type name="additive"></composite_type>
+                        <fieldsplit name="Stokes">
+                            <field name="Velocity">
+                                <region_ids>
+                                    <integer_value rank="1" shape="2">3 4</integer_value>
+                                </region_ids>
+                            </field>
+                            <field name="Pressure">
+                                <region_ids>
+                                    <integer_value rank="1" shape="2">3 4</integer_value>
+                                </region_ids>
+                            </field>
+                            <field name="SlabVelocity">
+                                <region_ids>
+                                    <integer_value rank="1" shape="1">5</integer_value>
+                                </region_ids>
+                            </field>
+                            <field name="SlabPressure">
+                                <region_ids>
+                                    <integer_value rank="1" shape="1">5</integer_value>
+                                </region_ids>
+                            </field>
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="lu">
+                                    <factorization_package name="mumps"></factorization_package>
+                                </preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                        <fieldsplit name="EverythingElse">
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="none"></preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="in_timeloop"></solve>
+        </nonlinear_solver>
+        <functional name="SolidCourantNumberIntegral">
+            <string_value type="code" language="python3" lines="20">int  = sc*dx</string_value>
+            <ufl_symbol name="functional">
+                <string_value lines="1">int</string_value>
+            </ufl_symbol>
+            <form_representation name="quadrature"></form_representation>
+            <quadrature_rule name="default"></quadrature_rule>
+            <exclude_from_statistics></exclude_from_statistics>
+        </functional>
+        <functional name="SlabUnitTangentIntegral">
+            <string_value type="code" language="python3" lines="20">int  = inner(slabt, slabt)*dx</string_value>
+            <ufl_symbol name="functional">
+                <string_value lines="1">int</string_value>
+            </ufl_symbol>
+            <form_representation name="quadrature"></form_representation>
+            <quadrature_rule name="default"></quadrature_rule>
+            <exclude_from_statistics></exclude_from_statistics>
+        </functional>
+    </system>
+    <system name="Temperature">
+        <mesh name="Mesh"></mesh>
+        <ufl_symbol name="global">
+            <string_value lines="1">uT</string_value>
+        </ufl_symbol>
+        <field name="PotentialTemperature">
+            <ufl_symbol name="global">
+                <string_value lines="1">T</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P2">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">2</integer_value>
+                        </degree>
+                    </element>
+                    <initial_condition name="WholeMesh" type="initial_condition">
+                        <cpp rank="0">
+                            <members>
+                                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr Ti_ptr;</string_value>
+                            </members>
+                            <initialization>
+                                <string_value type="code" language="cpp" lines="20">Ti_ptr = system()-&gt;fetch_coeff(&quot;InitialTemperature&quot;)-&gt;genericfunction_ptr(time());</string_value>
+                            </initialization>
+                            <eval>
+                                <string_value type="code" language="cpp" lines="20">Ti_ptr-&gt;eval(values, x, cell);</string_value>
+                            </eval>
+                        </cpp>
+                    </initial_condition>
+                    <boundary_condition name="Top">
+                        <boundary_ids>
+                            <integer_value rank="1" shape="2">5 6</integer_value>
+                        </boundary_ids>
+                        <sub_components name="All">
+                            <type name="Dirichlet" type="boundary_condition">
+                                <constant>
+                                    <real_value rank="0">0</real_value>
+                                    <comment>non-dim&#x0A;&#x0A;T0 = 1 K</comment>
+                                </constant>
+                            </type>
+                        </sub_components>
+                    </boundary_condition>
+                    <boundary_condition name="Sides">
+                        <boundary_ids>
+                            <integer_value rank="1" shape="4">7 9 16 14</integer_value>
+                        </boundary_ids>
+                        <sub_components name="All">
+                            <type name="Dirichlet" type="boundary_condition">
+                                <internal rank="0">
+                                    <algorithm name="Reference">
+                                        <coefficient name="InitialTemperature"></coefficient>
+                                    </algorithm>
+                                </internal>
+                            </type>
+                        </sub_components>
+                    </boundary_condition>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_visualization></include_in_visualization>
+                <include_in_statistics></include_in_statistics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <coefficient name="SurfaceHeatFlux">
+            <ufl_symbol name="global">
+                <string_value lines="1">qs</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">20.9677419354839</real_value>
+                            <comment>non-dim&#x0A;&#x0A;q0 = Q0*h = k0*T0/h = 3.1e-3 W/m/m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="SlabAge">
+            <ufl_symbol name="global">
+                <string_value lines="1">tslab</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">27</real_value>
+                            <comment>Myr</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="CrustalConductivity">
+            <ufl_symbol name="global">
+                <string_value lines="1">kc</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.806451612903226</real_value>
+                            <comment>non-dim&#x0A;&#x0A;k0 = km = 3.1 W/m/K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="MantleConductivity">
+            <ufl_symbol name="global">
+                <string_value lines="1">km</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1</real_value>
+                            <comment>non-dim&#x0A;&#x0A;k0 = km = 3.1 W/m/K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="UpperCrustHeatProduction">
+            <ufl_symbol name="global">
+                <string_value lines="1">Quc</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.419354838709677</real_value>
+                            <comment>non-dim&#x0A;&#x0A;Q0 = k0*T0/h/h = 3.1e-6 W/m/m/m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="LowerCrustHeatProduction">
+            <ufl_symbol name="global">
+                <string_value lines="1">Qlc</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.0870967741935484</real_value>
+                            <comment>non-dim&#x0A;&#x0A;Q0 = k0*T0/h/h = 3.1e-6 W/m/m/m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="CrustalDensity">
+            <ufl_symbol name="global">
+                <string_value lines="1">rhoc</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.833333333333333</real_value>
+                            <comment>non-dim&#x0A;&#x0A;rho0 = 3300 kg/m/m/m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="MantleDensity">
+            <ufl_symbol name="global">
+                <string_value lines="1">rhom</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1</real_value>
+                            <comment>non-dim&#x0A;&#x0A;rho0 = 3300 kg/m/m/m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="IsobaricHeatCapacity">
+            <ufl_symbol name="global">
+                <string_value lines="1">cp</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1</real_value>
+                            <comment>non-dim&#x0A;&#x0A;cp0 = 1250 J/kg/K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="TemperatureScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">T0</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1</real_value>
+                            <comment>K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="SurfaceTemperature">
+            <ufl_symbol name="global">
+                <string_value lines="1">Ts</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">273</real_value>
+                            <comment>K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="MantlePotentialTemperature">
+            <ufl_symbol name="global">
+                <string_value lines="1">Tm</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1350</real_value>
+                            <comment>non-dim&#x0A;&#x0A;T0 = 1 K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_statistics></include_in_statistics>
+            </diagnostics>
+        </coefficient>
+        <coefficient name="TemperatureTheta">
+            <ufl_symbol name="global">
+                <string_value lines="1">thetaT</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.5</real_value>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="InitialTemperature">
+            <ufl_symbol name="global">
+                <string_value lines="1">Ti</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P2">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">2</integer_value>
+                        </degree>
+                    </element>
+                    <value name="Wedge" type="value">
+                        <region_ids>
+                            <integer_value rank="1" shape="4">1 2 3 4</integer_value>
+                        </region_ids>
+                        <cpp rank="0">
+                            <members>
+                                <string_value type="code" language="cpp" lines="20">double kc, km, quc, qlc, qm, Quc, Qlc, Qm, Tlc, Tuc, Tm, Ts, deltazc, deltazuc, deltaztrench, deltaxcoast;&#x0A;mutable double deltaz, deltazsurface;</string_value>
+                            </members>
+                            <initialization>
+                                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr Quc_ptr = system()-&gt;fetch_coeff(&quot;UpperCrustHeatProduction&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr Qlc_ptr = system()-&gt;fetch_coeff(&quot;LowerCrustHeatProduction&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltazuc_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;UpperCrustThickness&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltazlc_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;LowerCrustThickness&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltaztrench_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;TrenchDepth&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltaxcoast_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;CoastDistance&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr quc_ptr = system()-&gt;fetch_coeff(&quot;SurfaceHeatFlux&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr kc_ptr = system()-&gt;fetch_coeff(&quot;CrustalConductivity&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr km_ptr = system()-&gt;fetch_coeff(&quot;MantleConductivity&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr Tm_ptr = system()-&gt;fetch_coeff(&quot;MantlePotentialTemperature&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr Ts_ptr = system()-&gt;fetch_coeff(&quot;SurfaceTemperature&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;deltazuc = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltazuc_ptr));&#x0A;double deltazlc = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltazlc_ptr));&#x0A;deltaztrench = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltaztrench_ptr));&#x0A;deltaxcoast = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltaxcoast_ptr));&#x0A;Quc = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Quc_ptr));&#x0A;Qlc = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Qlc_ptr));&#x0A;quc = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(quc_ptr));&#x0A;kc = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(kc_ptr));&#x0A;&#x0A;km = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(km_ptr));&#x0A;qlc = quc - deltazuc*Quc;&#x0A;qm = qlc - deltazlc*Qlc;&#x0A;Tm = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Tm_ptr));&#x0A;Ts = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Ts_ptr));&#x0A;&#x0A;Tuc = deltazuc*quc/kc - Quc*(deltazuc*deltazuc)/2.0/kc;&#x0A;Tlc = Tuc + deltazlc*qlc/kc - Qlc*(deltazlc*deltazlc)/2.0/kc;&#x0A;deltazc = deltazuc + deltazlc;</string_value>
+                            </initialization>
+                            <eval>
+                                <string_value type="code" language="cpp" lines="20">deltazsurface = std::min(std::max(deltaztrench*(1. - x[0]/deltaxcoast), 0.), deltaztrench);&#x0A;&#x0A;if (-(x[1]+deltazsurface) &lt; deltazuc)&#x0A;{&#x0A;  deltaz = -(x[1] + deltazsurface);&#x0A;  values[0] = deltaz*quc/kc - Quc*(deltaz*deltaz)/2.0/kc;&#x0A;}&#x0A;else if (-(x[1]+deltazsurface) &lt; deltazc)&#x0A;{&#x0A;  deltaz = -(x[1] + deltazsurface + deltazuc);&#x0A;  values[0] = Tuc + deltaz*qlc/kc - Qlc*deltaz*deltaz/2.0/kc;&#x0A;}&#x0A;else&#x0A;{&#x0A;  deltaz = -(x[1] + deltazsurface + deltazc);&#x0A;  values[0] = Tlc + deltaz*qm/km;&#x0A;}&#x0A;&#x0A;if (values[0] &gt;= Tm)&#x0A;{&#x0A;  values[0] = Tm;&#x0A;}</string_value>
+                            </eval>
+                            <time_independent></time_independent>
+                        </cpp>
+                    </value>
+                    <value name="Slab" type="value">
+                        <region_ids>
+                            <integer_value rank="1" shape="1">5</integer_value>
+                        </region_ids>
+                        <cpp rank="0">
+                            <members>
+                                <string_value type="code" language="cpp" lines="20">mutable double deltazsurface;&#x0A;double hthermal, deltaztrench, deltaxcoast, Tm, Ts;</string_value>
+                            </members>
+                            <initialization>
+                                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr km_ptr = system()-&gt;fetch_coeff(&quot;MantleConductivity&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr rhom_ptr = system()-&gt;fetch_coeff(&quot;MantleDensity&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr cp_ptr = system()-&gt;fetch_coeff(&quot;IsobaricHeatCapacity&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr tslab_ptr = system()-&gt;fetch_coeff(&quot;SlabAge&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr v0_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;VelocityScale&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr h_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;LengthScale&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr Tm_ptr = system()-&gt;fetch_coeff(&quot;MantlePotentialTemperature&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr Ts_ptr = system()-&gt;fetch_coeff(&quot;SurfaceTemperature&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltaztrench_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;TrenchDepth&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltaxcoast_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;CoastDistance&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;double cp = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(cp_ptr));&#x0A;double km = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(km_ptr));&#x0A;double rhom = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(rhom_ptr));&#x0A;double tslab = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(tslab_ptr));&#x0A;double v0 = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(v0_ptr));&#x0A;double h = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(h_ptr));&#x0A;&#x0A;Tm = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Tm_ptr));&#x0A;Ts = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Ts_ptr));&#x0A;deltaztrench = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltaztrench_ptr));&#x0A;deltaxcoast = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltaxcoast_ptr));&#x0A;&#x0A;double kappam = km/rhom/cp;&#x0A;hthermal = 2*std::sqrt(kappam*tslab*v0*1.e6/h);</string_value>
+                            </initialization>
+                            <eval>
+                                <string_value type="code" language="cpp" lines="20">deltazsurface = std::min(std::max(deltaztrench*(1. - x[0]/deltaxcoast), 0.), deltaztrench);&#x0A;&#x0A;values[0] = Tm*std::erf(-(x[1]+deltazsurface)/hthermal);</string_value>
+                            </eval>
+                            <time_independent></time_independent>
+                        </cpp>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ShearHeatingStressScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">tau0</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">4125000</real_value>
+                            <comment>Pa&#x0A;&#x0A;tau0 = rho0*cp0*T0</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="FrictionCoefficient">
+            <ufl_symbol name="global">
+                <string_value lines="1">mu0</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0</real_value>
+                            <comment>non-dim</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="DensityScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">rho0</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">3300</real_value>
+                            <comment>kg/m/m/m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="GravityMagnitude">
+            <ufl_symbol name="global">
+                <string_value lines="1">g</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">9.80665</real_value>
+                            <comment>m/s/s</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ShearHeatingStressPrefactor">
+            <ufl_symbol name="global">
+                <string_value lines="1">Ash</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0.0002</real_value>
+                            <comment>MPa^-(rsh+nsh) s^-1&#x0A;&#x0A;We don&apos;t include grain size dependency here yet so no m.</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ShearHeatingZoneThickness">
+            <ufl_symbol name="global">
+                <string_value lines="1">wsh</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">500</real_value>
+                            <comment>m</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ShearHeatingStressExponent">
+            <ufl_symbol name="global">
+                <string_value lines="1">nsh</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1.9</real_value>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ShearHeatingActivationEnthalpy">
+            <ufl_symbol name="global">
+                <string_value lines="1">Esh</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">141</real_value>
+                            <comment>kJ/mol</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ShearHeatingActivationVolume">
+            <ufl_symbol name="global">
+                <string_value lines="1">Vsh</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0</real_value>
+                            <comment>m^3/mol</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="WaterActivity">
+            <ufl_symbol name="global">
+                <string_value lines="1">ah2o</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">1</real_value>
+                            <comment>non-dim&#x0A;&#x0A;no effect unless rsh /= 0</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="WaterFugacityA1">
+            <ufl_symbol name="global">
+                <string_value lines="1">Af1</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">5521</real_value>
+                            <comment>MPa&#x0A;&#x0A;no effect unless rsh /= 0</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="WaterFugacityA2">
+            <ufl_symbol name="global">
+                <string_value lines="1">Af2</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">31.28</real_value>
+                            <comment>kJ/mol&#x0A;&#x0A;no effect unless rsh /= 0</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="WaterFugacityA3">
+            <ufl_symbol name="global">
+                <string_value lines="1">Af3</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">-2.009e-05</real_value>
+                            <comment>m^3/mol&#x0A;&#x0A;no effect unless rsh /= 0</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="WaterFugacityExponent">
+            <ufl_symbol name="global">
+                <string_value lines="1">rsh</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">0</real_value>
+                            <comment>non-dim</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="ConductivityScale">
+            <ufl_symbol name="global">
+                <string_value lines="1">k0</string_value>
+            </ufl_symbol>
+            <type name="Constant">
+                <rank name="Scalar" rank="0">
+                    <value name="WholeMesh" type="value">
+                        <constant>
+                            <real_value rank="0">3.1</real_value>
+                            <comment>W/m/K</comment>
+                        </constant>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics></diagnostics>
+        </coefficient>
+        <coefficient name="Temperature">
+            <ufl_symbol name="global">
+                <string_value lines="1">Tfull</string_value>
+            </ufl_symbol>
+            <type name="Expression">
+                <rank name="Scalar" rank="0">
+                    <element name="P2">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">2</integer_value>
+                        </degree>
+                    </element>
+                    <value name="WholeMesh" type="value">
+                        <cpp rank="0">
+                            <members>
+                                <string_value type="code" language="cpp" lines="20">GenericFunction_ptr T_ptr;&#x0A;mutable double z, deltazsurface;&#x0A;double T0, Ts, deltaztrench, deltaxcoast;</string_value>
+                            </members>
+                            <initialization>
+                                <string_value type="code" language="cpp" lines="20">T_ptr = system()-&gt;fetch_field(&quot;PotentialTemperature&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;GenericFunction_ptr T0_ptr = system()-&gt;fetch_coeff(&quot;TemperatureScale&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr Ts_ptr = system()-&gt;fetch_coeff(&quot;SurfaceTemperature&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;T0 = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(T0_ptr));&#x0A;Ts = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(Ts_ptr));&#x0A;&#x0A;GenericFunction_ptr deltaztrench_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;TrenchDepth&quot;)-&gt;genericfunction_ptr(time());&#x0A;GenericFunction_ptr deltaxcoast_ptr = bucket()-&gt;fetch_system(&quot;Stokes&quot;)-&gt;fetch_coeff(&quot;CoastDistance&quot;)-&gt;genericfunction_ptr(time());&#x0A;&#x0A;deltaztrench = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltaztrench_ptr));&#x0A;deltaxcoast = double(*std::dynamic_pointer_cast&lt;dolfin::Constant&gt;(deltaxcoast_ptr));</string_value>
+                            </initialization>
+                            <eval>
+                                <string_value type="code" language="cpp" lines="20">deltazsurface = std::min(std::max(deltaztrench*(1. - x[0]/deltaxcoast), 0.), deltaztrench);&#x0A;z = -(x[1]+deltazsurface);&#x0A;&#x0A;T_ptr-&gt;eval(values, x, cell);&#x0A;values[0] = T0*values[0] + 0.3*z;</string_value>
+                            </eval>
+                        </cpp>
+                    </value>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_visualization></include_in_visualization>
+                <include_in_statistics></include_in_statistics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </coefficient>
+        <nonlinear_solver name="TemperatureNoShearHeating">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">Tvar = T_i&#x0A;vvar = v_i&#x0A;vpvar = vp_i&#x0A;&#x0A;bT_uppercrust = inner(grad(T_t), kc*grad(Tvar)) - T_t*Quc&#x0A;bT_lowercrust = inner(grad(T_t), kc*grad(Tvar)) - T_t*Qlc&#x0A;bT_wedge = rhom*cp*T_t*inner(vvar, grad(Tvar)) + inner(grad(T_t), km*grad(Tvar))&#x0A;bT_slab  = rhom*cp*T_t*inner(vpvar, grad(Tvar)) + inner(grad(T_t), km*grad(Tvar))&#x0A;&#x0A;r  = bT_uppercrust*dx_uppercrust&#x0A;r += bT_lowercrust*dx_lowercrust&#x0A;r += bT_wedge*dx_wedge&#x0A;r += bT_slab*dx_slab</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J=derivative(r,uT_i,uT_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">6</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-10</real_value>
+                </relative_error>
+                <absolute_error>
+                    <real_value rank="0">1e-15</real_value>
+                </absolute_error>
+                <max_iterations>
+                    <integer_value rank="0">50</integer_value>
+                </max_iterations>
+                <monitors>
+                    <view_snes></view_snes>
+                    <residual></residual>
+                </monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="lu">
+                        <factorization_package name="mumps"></factorization_package>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="at_start"></solve>
+        </nonlinear_solver>
+        <nonlinear_solver name="TemperatureShearHeating">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">Tvar = T_i&#x0A;vvar = v_i&#x0A;vpvar = vp_i&#x0A;&#x0A;bT_uppercrust = inner(grad(T_t), kc*grad(Tvar)) - T_t*Quc&#x0A;bT_lowercrust = inner(grad(T_t), kc*grad(Tvar)) - T_t*Qlc&#x0A;bT_wedge = rhom*cp*T_t*inner(vvar, grad(Tvar)) + inner(grad(T_t), km*grad(Tvar))&#x0A;bT_slab  = rhom*cp*T_t*inner(vpvar, grad(Tvar)) + inner(grad(T_t), km*grad(Tvar))&#x0A;&#x0A;r  = bT_uppercrust*dx_uppercrust&#x0A;r += bT_lowercrust*dx_lowercrust&#x0A;r += bT_wedge*dx_wedge&#x0A;r += bT_slab*dx_slab&#x0A;r -= (T_t*tau_i*deltav)(&apos;+&apos;)*dS_slabsh</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J=derivative(r,uT_i,uT_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">6</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-10</real_value>
+                </relative_error>
+                <absolute_error>
+                    <real_value rank="0">1e-15</real_value>
+                </absolute_error>
+                <max_iterations>
+                    <integer_value rank="0">50</integer_value>
+                </max_iterations>
+                <monitors>
+                    <view_snes></view_snes>
+                    <residual></residual>
+                </monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="lu">
+                        <factorization_package name="mumps"></factorization_package>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="at_start"></solve>
+        </nonlinear_solver>
+        <nonlinear_solver name="Newton">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">Tvar = T_i&#x0A;vvar = v_i&#x0A;vpvar = vp_i&#x0A;&#x0A;bT_uppercrust = inner(grad(T_t), kc*grad(Tvar)) - T_t*Quc&#x0A;bT_lowercrust = inner(grad(T_t), kc*grad(Tvar)) - T_t*Qlc&#x0A;bT_wedge = rhom*cp*T_t*inner(vvar, grad(Tvar)) + inner(grad(T_t), km*grad(Tvar))&#x0A;bT_slab  = rhom*cp*T_t*inner(vpvar, grad(Tvar)) + inner(grad(T_t), km*grad(Tvar))&#x0A;&#x0A;r  = bT_uppercrust*dx_uppercrust&#x0A;r += bT_lowercrust*dx_lowercrust&#x0A;r += bT_wedge*dx_wedge&#x0A;r += bT_slab*dx_slab&#x0A;r -= (T_t*tau_i*deltav)(&apos;+&apos;)*dS_slabsh</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J=derivative(r,uT_i,uT_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">6</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-10</real_value>
+                </relative_error>
+                <absolute_error>
+                    <real_value rank="0">1e-10</real_value>
+                </absolute_error>
+                <max_iterations>
+                    <integer_value rank="0">50</integer_value>
+                </max_iterations>
+                <monitors>
+                    <view_snes></view_snes>
+                    <residual></residual>
+                </monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="lu">
+                        <factorization_package name="mumps"></factorization_package>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="in_timeloop"></solve>
+        </nonlinear_solver>
+        <functional name="InitialTemperatureIntegral">
+            <string_value type="code" language="python3" lines="20">int  = Ti*dx</string_value>
+            <ufl_symbol name="functional">
+                <string_value lines="1">int</string_value>
+            </ufl_symbol>
+            <form_representation name="quadrature"></form_representation>
+            <quadrature_rule name="default"></quadrature_rule>
+            <exclude_from_statistics></exclude_from_statistics>
+        </functional>
+    </system>
+    <system name="Viscosity">
+        <mesh name="Mesh"></mesh>
+        <ufl_symbol name="global">
+            <string_value lines="1">uvisc</string_value>
+        </ufl_symbol>
+        <field name="Viscosity">
+            <ufl_symbol name="global">
+                <string_value lines="1">visc</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P0">
+                        <family>
+                            <string_value lines="1">DG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">0</integer_value>
+                        </degree>
+                    </element>
+                    <initial_condition name="WholeMesh" type="initial_condition">
+                        <constant>
+                            <real_value rank="0">10000</real_value>
+                        </constant>
+                    </initial_condition>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_statistics></include_in_statistics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <nonlinear_solver name="Solver">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">r  = visc_t*(visc_i - etaprime)*dx_wedge&#x0A;r += visc_t*(visc_i - etaprimep)*dx_slab</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J = derivative(r, uvisc_i, uvisc_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">6</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-06</real_value>
+                </relative_error>
+                <max_iterations>
+                    <integer_value rank="0">1</integer_value>
+                </max_iterations>
+                <monitors></monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="fieldsplit">
+                        <composite_type name="additive"></composite_type>
+                        <fieldsplit name="NotCrust">
+                            <field name="Viscosity">
+                                <region_ids>
+                                    <integer_value rank="1" shape="3">3 4 5</integer_value>
+                                </region_ids>
+                            </field>
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="jacobi"></preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                        <fieldsplit name="EverythingElse">
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="none"></preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="with_diagnostics"></solve>
+        </nonlinear_solver>
+    </system>
+    <system name="SlabStress">
+        <mesh name="Mesh"></mesh>
+        <ufl_symbol name="global">
+            <string_value lines="1">usigma</string_value>
+        </ufl_symbol>
+        <field name="Normal">
+            <ufl_symbol name="global">
+                <string_value lines="1">nsigman</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <field name="Tangential">
+            <ufl_symbol name="global">
+                <string_value lines="1">tsigman</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <field name="ShearHeating">
+            <ufl_symbol name="global">
+                <string_value lines="1">taush</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <field name="StrainRate">
+            <ufl_symbol name="global">
+                <string_value lines="1">edotsh</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Scalar" rank="0">
+                    <element name="P1">
+                        <family>
+                            <string_value lines="1">CG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <nonlinear_solver name="Solver">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">fn = FacetNormal(usigma_e.cell())&#x0A;ft = as_vector([-fn[1], fn[0]])&#x0A;&#x0A;kup = as_vector([0, 1])&#x0A;kdotn = dot(kup, fn)&#x0A;kndn = 0.5*(kdotn - abs(kdotn))&#x0A;fdn = -kndn/abs(kdotn) # not safe to use on vertical facets&#x0A;&#x0A;sigman = dot(2*eta0*e0*1.e-6*etaprime*edot, fn) # output in MPa&#x0A;&#x0A;snsigman = ((nsigman_t*(nsigman_i - dot(fn, sigman))*fdn)(&apos;+&apos;) + \&#x0A;            (nsigman_t*(nsigman_i - dot(fn, sigman))*fdn)(&apos;-&apos;))*dS_slab&#x0A;stsigman = ((tsigman_t*(tsigman_i - dot(ft, sigman))*fdn)(&apos;+&apos;) + \&#x0A;            (tsigman_t*(tsigman_i - dot(ft, sigman))*fdn)(&apos;-&apos;))*dS_slab&#x0A;staush   = (taush_t*(taush_i - tau0*tau_i*1.e-6))(&apos;+&apos;)*dS_slabsh  # MPa&#x0A;sedotsh  = (edotsh_t*(edotsh_i - e0*h*deltav/wsh))(&apos;+&apos;)*dS_slab&#x0A;&#x0A;r = snsigman + stsigman + staush + sedotsh</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J = derivative(r, usigma_i, usigma_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_degree>
+                    <integer_value rank="0">4</integer_value>
+                </quadrature_degree>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-06</real_value>
+                </relative_error>
+                <max_iterations>
+                    <integer_value rank="0">1</integer_value>
+                </max_iterations>
+                <monitors>
+                    <residual></residual>
+                </monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="fieldsplit">
+                        <composite_type name="additive"></composite_type>
+                        <fieldsplit name="Slab">
+                            <field name="Normal">
+                                <boundary_ids>
+                                    <integer_value rank="1" shape="4">1 2 3 4</integer_value>
+                                </boundary_ids>
+                            </field>
+                            <field name="Tangential">
+                                <boundary_ids>
+                                    <integer_value rank="1" shape="4">1 2 3 4</integer_value>
+                                </boundary_ids>
+                            </field>
+                            <field name="ShearHeating">
+                                <boundary_ids>
+                                    <integer_value rank="1" shape="2">1 2</integer_value>
+                                </boundary_ids>
+                            </field>
+                            <field name="StrainRate">
+                                <boundary_ids>
+                                    <integer_value rank="1" shape="4">1 2 3 4</integer_value>
+                                </boundary_ids>
+                            </field>
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="lu">
+                                    <factorization_package name="mumps"></factorization_package>
+                                </preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                        <fieldsplit name="EverythingElse">
+                            <monitors></monitors>
+                            <linear_solver>
+                                <iterative_method name="preonly"></iterative_method>
+                                <preconditioner name="none"></preconditioner>
+                            </linear_solver>
+                        </fieldsplit>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="with_diagnostics"></solve>
+        </nonlinear_solver>
+    </system>
+    <system name="TemperatureFlux">
+        <mesh name="Mesh"></mesh>
+        <ufl_symbol name="global">
+            <string_value lines="1">uTflux</string_value>
+        </ufl_symbol>
+        <field name="Diffusive">
+            <ufl_symbol name="global">
+                <string_value lines="1">kgradT</string_value>
+            </ufl_symbol>
+            <type name="Function">
+                <rank name="Vector" rank="1">
+                    <element name="P1DG">
+                        <family>
+                            <string_value lines="1">DG</string_value>
+                        </family>
+                        <degree>
+                            <integer_value rank="0">1</integer_value>
+                        </degree>
+                    </element>
+                </rank>
+            </type>
+            <diagnostics>
+                <include_in_detectors></include_in_detectors>
+            </diagnostics>
+        </field>
+        <nonlinear_solver name="Solver">
+            <type name="SNES">
+                <form name="Residual" rank="0">
+                    <string_value type="code" language="python3" lines="20">bc = inner(kgradT_t, kgradT_i - (k0*T0/h)*kc*grad(Tfull))&#x0A;bm = inner(kgradT_t, kgradT_i - (k0*T0/h)*km*grad(Tfull))&#x0A;&#x0A;r  = bc*dx_uppercrust&#x0A;r += bc*dx_lowercrust&#x0A;r += bm*dx_slab&#x0A;r += bm*dx_wedge</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">r</string_value>
+                    </ufl_symbol>
+                </form>
+                <form name="Jacobian" rank="1">
+                    <string_value type="code" language="python3" lines="20">J = derivative(r, uTflux_i, uTflux_a)</string_value>
+                    <ufl_symbol name="solver">
+                        <string_value lines="1">J</string_value>
+                    </ufl_symbol>
+                </form>
+                <form_representation name="quadrature"></form_representation>
+                <quadrature_rule name="default"></quadrature_rule>
+                <snes_type name="ls">
+                    <ls_type name="cubic"></ls_type>
+                    <convergence_test name="default"></convergence_test>
+                </snes_type>
+                <relative_error>
+                    <real_value rank="0">1e-06</real_value>
+                </relative_error>
+                <max_iterations>
+                    <integer_value rank="0">1</integer_value>
+                </max_iterations>
+                <monitors></monitors>
+                <linear_solver>
+                    <iterative_method name="preonly"></iterative_method>
+                    <preconditioner name="lu">
+                        <factorization_package name="mumps"></factorization_package>
+                    </preconditioner>
+                </linear_solver>
+                <never_ignore_solver_failures></never_ignore_solver_failures>
+            </type>
+            <solve name="with_diagnostics"></solve>
+        </nonlinear_solver>
+    </system>
+</terraferma_options>

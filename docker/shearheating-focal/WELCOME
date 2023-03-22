@@ -1,0 +1,7 @@
+Welcome to the docker container for a global suite of subduction zones with shear heating based on:
+"Deep decoupling in subduction zones: observations and temperature limits,", Abers et al., Geosphere, 2020.
+
+This docker image contains all the input files for the numerical simulations as well as a complete installation of the software
+required to run them.  This allows interested users to generate and modify all the numerical results.
+
+A full description of how to run these simulations can be found in the README.md file.

@@ -1,0 +1,14 @@
+#%Module1.0
+proc ModulesHelp { } {
+        puts stderr "\tSets environment for TF Utils."
+}
+module-whatis "TF Utils"
+
+set tferma_utils_prefix /usr/local/tferma_utils
+
+prepend-path PATH                $tferma_utils_prefix/bin
+prepend-path PYTHONPATH          $tferma_utils_prefix/lib/python3.6/site-packages
+prepend-path DIAMOND_CONFIG_PATH $tferma_utils_prefix/share/terraferma_utils/diamond
+
+module load terraferma
+
