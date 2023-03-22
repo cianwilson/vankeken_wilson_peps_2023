@@ -1,0 +1,7 @@
+
+if [ "x$MODULESHOME" != "x" ]; then
+  if [ `module avail -t 2>&1 | grep -c '^tferma_utils'` -gt 0 ]; then module load tferma_utils; fi
+  if [ `module avail -t 2>&1 | grep -c '^extra_scripts'` -gt 0 ]; then module load extra_scripts; fi
+  if [ `module avail -t 2>&1 | grep -c '^gmsh'` -gt 0 ]; then module load gmsh; fi
+fi
+

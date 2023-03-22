@@ -1,0 +1,11 @@
+#%Module1.0
+proc ModulesHelp { } {
+        puts stderr "\tSets environment for GMsh."
+}
+module-whatis "GMsh"
+
+set gmsh_prefix /usr/local/gmsh
+
+prepend-path PATH                $gmsh_prefix/bin
+
+
