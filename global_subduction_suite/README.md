@@ -1,21 +1,17 @@
-This repository contains a global suite of input files based on:
-"Deep decoupling in subduction zones: observations and temperature limits,", Abers et al., Geosphere, 2020.
+This directory contains a global suite of input files for TerraFERMA used in:
+"An introductory review of thermal structure of subduction zones: II. Numerical approach, validation, and comparison", 
+van Keken & Wilson, PEPS, 2023.
 
 ## Directories
 
-The primary subdirectories of this repository correspond to the different subduction zones discussed in Syracuse et al., PEPI, 2010,
+The primary subdirectories of this directory correspond to the different subduction zones discussed in Syracuse et al., PEPI, 2010,
 for example:
 
 * `01_Alaska_Peninsula`: contains input files for the Alaska peninsula subduction zone geometry
 * `07_Nicaragua`: contains input files for the Nicaragua subduction zone geometry
 * `48_N_Honshu`: contains input files for the N. Honshu subduction zone geometry
 
-with additional directories for:
-
-* `00_Idealized`: contains input files for the idealized planar subduction zone geometry
-* `59_CAFE09`: contains input files for the Washington Cascades subduction zone geometry
-
-Where possible (01, 07 & 48), the numbers in the names refer to the indexing system of Syracuse et al., PEPI, 2010.
+The numbers in the names refer to the indexing system of Syracuse et al., PEPI, 2010.
 
 ## Files
 
@@ -37,17 +33,17 @@ Additionally supplementary files are included for the geometry and the sediment 
 ## Running a simulation
 
 The following instructions assume an active installation of TerraFERMA (the Transparent Finite ELement Rapid Model Assembler).  If
-one is not available the consider using the docker image provided for this repository at:
+one is not available the consider using the docker image provided for this directory at:
 
-https://hub.docker.com/r/cianwilson/globalsuite
+https://github.com/users/cianwilson/packages/container/package/vankeken\_wilson\_peps\_2023
 
 This docker image contains a complete installation of TerraFERMA and its dependencies, PETSc, FEniCS and SPuD, within an Ubuntu
-18.04LTS OS.  For a full description of TerraFERMA please refer to the webpage:
+20.04LTS OS.  For a full description of TerraFERMA please refer to the webpage:
 
 http://terraferma.github.io
 
 To run a simulation use the `tfsimulationharness` command and an input `shml` file.  For example, to run the steady state case for
-the Alaska peninsula geometry, from the base directory of the repository, run:
+the Alaska peninsula geometry, from the base directory of the directory, run:
 
 ```bash
 cd 01_Alaska_Peninsula
@@ -60,41 +56,25 @@ The command is the same regardless of which directory/subduction zone is chosen.
 
 The example above runs a single simulation with some set of default parameters.  A set of parameters has been exposed to the command line through the simulation harness to enable reproduction of any case in the paper.  These are:
 
-* mu0      - friction coefficient (non-dim; default = 0.0)
-* rheology - a string describing the rheology (available options: WETQZ, WETOLV, WESTERLY, SERP, BIOT1, MUSC; default = WETQZ)
 * Dc       - the mechanical coupling depth along the slab (km, default = 80.0)
-* minres   - a scaling factor for the resolution setting the minimum element size and scaling all other resolutions appropriately (km, default = 2.0)
-
-For the `00_Idealized` case, the slab thermal parameters and slab dip are also available:
-
-* V   - the convergence rate of the slab (mm/yr, default = 50.0)
-* A   - age of the slab (Myr, default depends on case, default = 10.0)
-* dip - dip of the slab from horizontal (degrees, default = 20)
+* minres   - a scaling factor for the resolution setting the minimum element size and scaling all other resolutions appropriately (km, default = 1.0)
+* cfl      - the maximum Courant number to allow when selecting a timestep (only applicable to the time-dependent cases, default = 1.0 & 2.0)
 
 These can be varied with the optional `--parameters` argument to `tfsimulationharness`, e.g.:
 
 ```bash
 cd 01_Alaska_Peninsula
-tfsimulationharness --parameters mu0 0.1 --test subduction_steadystate_linpicard_p2p1p2.shml
+tfsimulationharness --parameters Dc 70.0 --test subduction_steadystate_linpicard_p2p1p2.shml
 ```
 
-to run the `01_Alaska_Peninsula` case with a higher friction coefficient, or:
+to run the `01_Alaska_Peninsula` case with a shallower coupling depth, or:
 
 ```bash
 cd 01_Alaska_Peninsula
-tfsimulationharness --parameters mu0 0.0 mu0 0.05 mu0 0.1 rheology SERP --test subduction_steadystate_linpicard_p2p1p2.shml
+tfsimulationharness --parameters minres 2.0 minres 1.0 mu0 0.0 --test subduction_steadystate_linpicard_p2p1p2.shml
 ```
 
-to run a suite of different friction coefficients for the `SERP` rheology.
-
-In the idealized case the extra parameters can also be accessed, e.g.:
-
-```bash
-cd 00_Idealized
-tfsimulationharness --parameters mu0 0.10 dip 30 Dc 85.0 --test subduction_steadystate_linpicard_p2p1p2.shml
-```
-
-for a higher friction coefficient, with a slab dipping at 30 degrees and a coupling depth of 85km.
+to run a suite of different resolutions.
 
 ## Other parameters
 
@@ -132,21 +112,15 @@ https://github.com/TerraFERMA/TerraFERMA/wiki/Documentation#cookbook
 Output is organized by parameters in the `subduction_steadystate_linpicard_p2p1p2.tfml.run` (for steady state cases) and
 `subduction_linearized_p2p1p2.tfml.run` (for time-dependent cases) subdirectories.  
 
-For example, in the `00_Idealized` case output using the default parameters can be found in the folder:
+For example, in the `01_Alaska_Peninsula` case output using the default parameters can be found in the folder:
 
 ```
-00_Idealized/subduction_steadystate_linpicard_p2p1p2.tfml.run/mu0_0.0/rheology_WETQZ/V_50.0/A_10.0/dip_20/Dc_80.0/run_0
-```
-
-Similarly, for the non-default parameters demonstrated above output will be in:
-
-```
-00_Idealized/subduction_steadystate_linpicard_p2p1p2.tfml.run/mu0_0.10/rheology_WETQZ/V_50.0/A_10.0/dip_30/Dc_85.0/run_0
+01_Alaska_Peninsual/subduction_linearized_p2p1p2.tfml.run/Dc_80.0/minres_1.0/cfl_2.0/run_0
 ```
 
 The main output files are:
 
-* `subduction_solid.xdmf` (and `subduction_solid.h5`): contains the full temperature field.  This can be transfered out of the docker image and opened in standard visualization packages like `paraview` (https://www.paraview.org) or plotted using the script `scripts/plot_temperature.py`.
+* `subduction_solid.xdmf` (and `subduction_solid.h5`): contains the full temperature field.  This can be opened in standard visualization packages like `paraview` (https://www.paraview.org) or plotted using the script `scripts/plot_temperature.py`.
 * `terraferma.log-0` and `terraferma.err-0`: the log and error files for TerraFERMA, useful if something goes wrong
 * `subduction_solid.det`: contains the output from various point "detectors" that evaluate the temperature at significant points in the simulation domain (mainly along and near the slab, see below for a description of these slab paths), this can be parsed in python using modules provided as part of TerraFERMA (see https://github.com/TerraFERMA/TerraFERMA/wiki/Tools#statfile-parser) or through the files described below for other formats
 * `subduction_solid.json`: contains a subset of the data from `subduction_solid.det` but using a `.json` format for easier parsing (see also `.tsv` files below)
@@ -199,13 +173,13 @@ These can be opened with any standard image viewer, e.g. `eog`.
 In addition to these simple plots of slab temperature and surface heat flux an additional basic python script is provided to plot the temperature over the whole domain, `scripts/plot_temperature.py`.  For the default `00_Idealized` example run above:
 
 ```bash
-cd 00_Idealized
-python3 ../scripts/plot_temperature.py subduction_steadystate_linpicard_p2p1p2.tfml.run/mu0_0.0/rheology_WETQZ/V_50.0/A_10.0/dip_20/Dc_80.0/run_0/subduction_solid.xdmf
+cd 01_Alaska_Peninsula
+python3 ../scripts/plot_temperature.py subduction_steadystate_linpicard_p2p1p2.tfml.run/subduction_steadystate_linpicard_p2p1p2.tfml.run/Dc_80.0/minres_2.0/run_0/subduction_solid.xdmf
 ```
 
 This will display the plot and save it in the run directory as `subduction_T_plot.png`.  In this example:
 
 ```
-00_Idealized/subduction_steadystate_linpicard_p2p1p2.tfml.run/mu0_0.0/rheology_WETQZ/V_50.0/A_10.0/dip_20/Dc_80.0/run_0/subduction_T_plot.png
+01_Alaska_Peninsula/subduction_steadystate_linpicard_p2p1p2.tfml.run/Dc_80.0/minres_2.0/run_0/subduction_T_plot.png
 ```
 

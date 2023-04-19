@@ -34,9 +34,20 @@ libspud.set_option("/system::Stokes/coefficient::CouplingDepth/type/rank/value/c
         </parameter>
         <parameter name="minres">
           <values>
-            <string_value lines="1">2.0</string_value>
+            <string_value lines="1">1.0</string_value>
           </values>
           <comment>resolution scale</comment>
+        </parameter>
+        <parameter name="cfl">
+          <values>
+            <string_value lines="1">1.0 2.0</string_value>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/timestepping/timestep/adaptive/constraint::CourantNumber/requested_maximum_value", float(cfl))</string_value>
+            <single_build/>
+          </update>
         </parameter>
       </parameter_sweep>
       <required_input>
