@@ -1,39 +1,44 @@
+minres = ${minres};
+cddepth = ${cddepth};
+
 uclcdepth = 15;
 mohodepth = 40;
 iodepth = 139;
+ptdepth = 100;
 
 // POINTS
 // top left
-Point(1) = {0, 0, 0, 2.0};
+Point(1) = {0, 0, 0, 2.0*minres};
 // top right
-Point(2) = {400, 0, 0, 4.0};
+Point(2) = {400, 0, 0, 4.0*minres};
 // right upper crust base
-Point(3) = {400, -uclcdepth, 0, 4.0};
+Point(3) = {400, -uclcdepth, 0, 4.0*minres};
 // right lower crust base (moho)
-Point(4) = {400, -mohodepth, 0, 4.0};
+Point(4) = {400, -mohodepth, 0, 4.0*minres};
 // bottom right
-Point(5) = {400, -200, 0, 6};
+Point(5) = {400, -200, 0, 6*minres};
 // lower left
-Point(6) = {0, -200, 0, 6};
+Point(6) = {0, -200, 0, 6*minres};
 // slab upper crust base
-Point(7) = {2*uclcdepth, -uclcdepth, 0, 2};
+Point(7) = {2*uclcdepth, -uclcdepth, 0, 2*minres};
 // slab lower crust base (moho)
-Point(8) = {2*mohodepth, -mohodepth, 0, 1};
+Point(8) = {2*mohodepth, -mohodepth, 0, 1*minres};
 // slab id start
-Point(9) = {140, -70, 0, 1};
+Point(9) = {140, -70, 0, 1*minres};
 // slab partial coupling depth
-Point(10) = {160, -80, 0, 1};
+Point(10) = {2*cddepth, -cddepth, 0, 1*minres};
 // slab id end
-Point(11) = {240, -120, 0, 1};
+Point(11) = {240, -120, 0, 1*minres};
 // slab full coupling depth
-Point(12) = {165, -82.5, 0, 1};
+Point(12) = {2*(cddepth+2.5), -(cddepth+2.5), 0, 1*minres};
 // moho id start
-Point(13) = {140, -mohodepth, 0, 1};
+Point(13) = {140, -mohodepth, 0, 1*minres};
 // moho id end
-Point(14) = {240, -mohodepth, 0, 1};
+Point(14) = {240, -mohodepth, 0, 1*minres};
 // in/out point on rhs boundary
-Point(15) = {400, -iodepth, 0, 4};
-//+
+Point(15) = {400, -iodepth, 0, 4*minres};
+// added detector point
+Point(16) = {2*ptdepth, -ptdepth, 0, 1*minres};
 
 // LINES
 Line(1) = {1, 2};
@@ -60,7 +65,8 @@ Line(11) = {9, 10};
 //+
 Line(12) = {10, 12};
 //+
-Line(13) = {12, 11};
+Line(13) = {12, 16};
+Line(21) = {16, 11}; // added the detector point
 //+
 Line(14) = {11, 5};
 //+
@@ -88,7 +94,7 @@ Curve Loop(3) = {10, -19, -16};
 //+
 Plane Surface(3) = {3};
 //+
-Curve Loop(4) = {11, 12, 13, -20, -17, 19};
+Curve Loop(4) = {11, 12, 13, 21, -20, -17, 19};
 //+
 Plane Surface(4) = {4};
 //+
@@ -96,7 +102,7 @@ Curve Loop(5) = {14, -5, -4, -18, 20};
 //+
 Plane Surface(5) = {5};
 //+
-Curve Loop(6) = {6, 7, 8, 9, 10, 11, 12, 13, 14};
+Curve Loop(6) = {6, 7, 8, 9, 10, 11, 12, 13, 21, 14};
 //+
 Plane Surface(6) = {6};
 
@@ -106,7 +112,7 @@ Physical Curve(1) = {8, 9, 10};
 // above coupling depth of coupling zone
 Physical Curve(2) = {11, 12};
 // below coupling depth of coupling zone
-Physical Curve(3) = {13};
+Physical Curve(3) = {13, 21};
 // lower slab interface
 Physical Curve(4) = {14};
 // top of domain
@@ -143,3 +149,4 @@ Physical Surface(3) = {4};
 Physical Surface(4) = {3, 5};
 // Slab
 Physical Surface(5) = {6};
+

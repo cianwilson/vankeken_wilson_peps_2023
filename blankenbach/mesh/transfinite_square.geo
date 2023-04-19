@@ -1,4 +1,4 @@
-l=${ncells};
+l=${nelements};
 pv=0.01;
 ph=1.0;
 Point(1) = {0, 0, 0};

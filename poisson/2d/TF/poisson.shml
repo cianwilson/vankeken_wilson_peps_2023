@@ -25,13 +25,13 @@
 libspud.set_option("/system::Poisson/field::T/type/rank/element/degree", int(p))</string_value>
           </update>
         </parameter>
-        <parameter name="ncells">
+        <parameter name="nelements">
           <values>
             <string_value lines="1">10 20 40 80 160 320</string_value>
           </values>
           <update>
             <string_value type="code" language="python3" lines="20">import libspud
-libspud.set_option("/geometry/mesh::Mesh/source/number_cells", int(ncells))</string_value>
+libspud.set_option("/geometry/mesh::Mesh/source/number_cells", [int(nelements), int(nelements)])</string_value>
             <single_build/>
           </update>
         </parameter>
@@ -66,7 +66,7 @@ pl.figure()
 
 # get and print the  parameters dictionary in the nested list
 params = l2error.parameters
-ncells = params['ncells']
+nelements = params['nelements']
 ps = params['p']
 
 test_passes = True
@@ -75,11 +75,11 @@ for p in ps:
   # convert nested-list error_l2  to a flattened numpy array
   errors_l2_a = np.array(l2error[key])
 
-  # get the mesh spacing from the parameter ncells (ugly but works)
-  hs = 1./np.array([int(nc) for nc in ncells])/float(p)  
+  # get the mesh spacing from the parameter nelements (ugly but works)
+  hs = 1./np.array([int(nc) for nc in nelements])/float(p)  
 
   with open('1d_poisson_convergence_p{}.csv'.format(p), 'w') as f:
-    np.savetxt(f, np.c_[[float(nc) for nc in ncells], hs, errors_l2_a], delimiter=',', header='ncells, hs, l2errs')
+    np.savetxt(f, np.c_[[float(nc) for nc in nelements], hs, errors_l2_a], delimiter=',', header='nelements, hs, l2errs')
 
   # calculate best-fit slope on log-log plot
   fit = np.polyfit(np.log(hs),np.log(errors_l2_a),1)

@@ -31,25 +31,28 @@
     </visualization>
     <dump_periods>
       <visualization_period>
-        <real_value rank="0">237.160145454545</real_value>
+        <real_value rank="0">23.71601454545455</real_value>
         <comment>non-dim
 
-t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
+t0 = h/v0 = 1330645161290.3225 s = 0.04216560072028045 Myr</comment>
       </visualization_period>
       <statistics_period>
-        <real_value rank="0">237.160145454545</real_value>
+        <real_value rank="0">23.71601454545455</real_value>
         <comment>non-dim
 
-t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
+t0 = h/v0 = 1330645161290.3225 s = 0.04216560072028045 Myr</comment>
       </statistics_period>
       <detectors_period>
-        <real_value rank="0">237.160145454545</real_value>
+        <real_value rank="0">23.71601454545455</real_value>
         <comment>non-dim
 
-t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
+t0 = h/v0 = 1330645161290.3225 s = 0.04216560072028045 Myr</comment>
       </detectors_period>
     </dump_periods>
     <detectors>
+      <point name="Point">
+        <real_value rank="1" dim1="dim" shape="2">200 -100</real_value>
+      </point>
       <array name="Trench">
         <python>
           <string_value type="code" language="python3" lines="20">def val():
@@ -96,6 +99,18 @@ t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
   xf = 400
   xs = np.arange(x0, xf, 1.)
   coords = [(x, -0.5*x) for x in xs]
+  return coords</string_value>
+        </python>
+      </array>
+      <array name="SlabLayer108">
+        <python>
+          <string_value type="code" language="python3" lines="20">def val():
+  from math import atan, cos
+  x0 = 0
+  xf = 400
+  yoff = 6.5/cos(atan(0.5))
+  xs = np.arange(x0, xf-2*yoff, 1.)
+  coords = [(x, -0.5*x - yoff) for x in xs]
   return coords</string_value>
         </python>
       </array>

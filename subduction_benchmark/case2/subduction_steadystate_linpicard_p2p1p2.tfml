@@ -47,6 +47,9 @@ t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
       </detectors_period>
     </dump_periods>
     <detectors>
+      <point name="Point">
+        <real_value rank="1" dim1="dim" shape="2">200 -100</real_value>
+      </point>
       <array name="Trench">
         <python>
           <string_value type="code" language="python3" lines="20">def val():
@@ -93,6 +96,18 @@ t0 = h/v0 = 1330645161290.3225 s = 0.042166755183119145 Myr</comment>
   xf = 400
   xs = np.arange(x0, xf, 1.)
   coords = [(x, -0.5*x) for x in xs]
+  return coords</string_value>
+        </python>
+      </array>
+      <array name="SlabLayer108">
+        <python>
+          <string_value type="code" language="python3" lines="20">def val():
+  from math import atan, cos
+  x0 = 0
+  xf = 400
+  yoff = 6.5/cos(atan(0.5))
+  xs = np.arange(x0, xf-2*yoff, 1.)
+  coords = [(x, -0.5*x - yoff) for x in xs]
   return coords</string_value>
         </python>
       </array>

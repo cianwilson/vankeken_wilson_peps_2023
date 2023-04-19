@@ -19,7 +19,7 @@
         <integer_value rank="0">1</integer_value>
       </number_processes>
       <parameter_sweep>
-        <parameter name="ncells">
+        <parameter name="nelements">
           <values>
             <string_value lines="1">32 64 128 256</string_value>
           </values>
@@ -39,14 +39,14 @@ libspud.set_option("/system::Stokes/coefficient::RayleighNumber/type/rank/value/
       <dependencies>
         <run name="Mesh">
           <input_file>
-            <string_value type="filename" lines="1">../transfinite_square.geo</string_value>
+            <string_value type="filename" lines="1">../mesh/transfinite_square.geo</string_value>
           </input_file>
           <run_when name="input_changed_or_output_missing"/>
           <parameter_sweep>
-            <parameter name="ncells">
+            <parameter name="nelements">
               <update>
                 <string_value type="code" language="python3" lines="20">from string import Template as template
-input_file = template(input_file).safe_substitute({'ncells':ncells})</string_value>
+input_file = template(input_file).safe_substitute({'nelements':nelements})</string_value>
               </update>
             </parameter>
           </parameter_sweep>
@@ -84,7 +84,7 @@ det = parser(basename+".det")
 stat = parser(basename+".stat")
 
 variables = OrderedDict()
-variables["ncells"]  = ncells
+variables["nelements"]  = nelements
 variables["Ra"]      = Ra
 variables["Nu"]      = -stat["Stokes"]["TemperatureTopSurfaceIntegral"]["functional_value"][-1]
 #variables["Nu_bot"]  = -stat["Stokes"]["TemperatureBottomSurfaceIntegral"]["functional_value"][-1]

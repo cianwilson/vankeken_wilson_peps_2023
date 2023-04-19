@@ -17,7 +17,7 @@
   </geometry>
   <io>
     <output_base_name>
-      <string_value lines="1">rbconvection</string_value>
+      <string_value lines="1">blankenbach</string_value>
     </output_base_name>
     <visualization>
       <element name="P1">
@@ -265,9 +265,9 @@ r = rv + rp</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value type="code" language="python3" lines="20">a = derivative(r, us_i, us_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(r, us_i, us_a)</string_value>
           <ufl_symbol name="solver">
-            <string_value lines="1">a</string_value>
+            <string_value lines="1">J</string_value>
           </ufl_symbol>
         </form>
         <form_representation name="quadrature"/>
@@ -451,9 +451,9 @@ values[0] = 0.5*range*(xtaper + ytaper + corner + 1.0);</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value type="code" language="python3" lines="20">a = derivative(r, uT_i, uT_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(r, uT_i, uT_a)</string_value>
           <ufl_symbol name="solver">
-            <string_value lines="1">a</string_value>
+            <string_value lines="1">J</string_value>
           </ufl_symbol>
         </form>
         <form_representation name="quadrature"/>

@@ -21,15 +21,19 @@ repo=$(dirname $(dirname $(realpath $0) ) )
 
 echo $repo
 
-pytest-3 --disable-warnings $repo/1d_poisson/fenics/poisson.py
+pytest-3 --disable-warnings $repo/poisson/1d/fenics/poisson.py
 
-tfsimulationharness --test $repo/1d_poisson/tf/poisson.shml
+tfsimulationharness --test $repo/poisson/1d/TF/poisson.shml
 
-tfsimulationharness --parameters ncells 32 --test $repo/blankenbach/1a-c/blankenbach.shml
+pytest-3 --disable-warnings $repo/poisson/2d/fenics/poisson.py
 
-tfsimulationharness --parameters ncells 32 --test $repo/blankenbach/2a/blankenbach.shml
+tfsimulationharness --test $repo/poisson/2d/TF/poisson.shml
 
-tfsimulationharness --parameters ncells 20 ncells 40 ncells 80 --test $repo/cornerflow/cornerflow.shml
+tfsimulationharness --parameters nelements 32 --test $repo/blankenbach/1a-c/blankenbach.shml
+
+tfsimulationharness --parameters nelements 32 --test $repo/blankenbach/2a/blankenbach.shml
+
+tfsimulationharness --parameters nelements 20 nelements 40 nelements 80 --test $repo/cornerflow/cornerflow.shml
 
 tfsimulationharness --parameters resscale 2.0 --test $repo/subduction_benchmark/case1/subduction_steadystate_linpicard_p2p1p2.shml
 

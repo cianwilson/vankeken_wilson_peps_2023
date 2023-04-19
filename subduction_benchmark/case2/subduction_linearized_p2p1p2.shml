@@ -19,12 +19,36 @@
         <integer_value rank="0">1</integer_value>
       </number_processes>
       <parameter_sweep>
-        <parameter name="resscale">
+        <parameter name="Dc">
+          <values>
+            <string_value lines="1">80.0</string_value>
+            <comment>Coupling depth, km</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/system::Stokes/coefficient::CouplingDepth/type/rank/value/constant", float(Dc))</string_value>
+            <single_build/>
+          </update>
+          <comment>Coupling depth</comment>
+        </parameter>
+        <parameter name="minres">
           <values>
             <string_value lines="1">2.0 1.0 0.5</string_value>
             <comment>Resolution scale (lower -&gt; higher resolution)</comment>
           </values>
           <comment>Convergence rate</comment>
+        </parameter>
+        <parameter name="cfl">
+          <values>
+            <string_value lines="1">1.0 2.0</string_value>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/timestepping/timestep/adaptive/constraint::CourantNumber/requested_maximum_value", float(cfl))</string_value>
+            <single_build/>
+          </update>
         </parameter>
         <parameter name="V">
           <values>
@@ -64,14 +88,20 @@ libspud.set_option("/system::Temperature/coefficient::SlabAge/type/rank/value/co
       <dependencies>
         <run name="Mesh">
           <input_file>
-            <string_value type="filename" lines="1">../subduction.geo</string_value>
+            <string_value type="filename" lines="1">../mesh/subduction.geo</string_value>
           </input_file>
           <run_when name="input_changed_or_output_missing"/>
           <parameter_sweep>
-            <parameter name="resscale">
+            <parameter name="Dc">
               <update>
                 <string_value type="code" language="python3" lines="20">from string import Template as template
-input_file = template(input_file).safe_substitute({'resscale':resscale})</string_value>
+input_file = template(input_file).safe_substitute({'cddepth':Dc})</string_value>
+              </update>
+            </parameter>
+            <parameter name="minres">
+              <update>
+                <string_value type="code" language="python3" lines="20">from string import Template as template
+input_file = template(input_file).safe_substitute({'minres':minres})</string_value>
               </update>
             </parameter>
           </parameter_sweep>
@@ -108,13 +138,16 @@ det = parser(basename+".det")
 
 slab_x = det['SlabLayer98']['position_0'][:,-1] 
 slab_y = det['SlabLayer98']['position_1'][:,-1]
-slab_T = det['Temperature']['Temperature']['SlabLayer98'][:,-1]
+slab_T = det['Temperature']['PotentialTemperature']['SlabLayer98'][:,-1]
+slab_x_108 = det['SlabLayer108']['position_0'][:,-1] 
+slab_y_108 = det['SlabLayer108']['position_1'][:,-1]
+slab_T_108 = det['Temperature']['PotentialTemperature']['SlabLayer108'][:,-1]
 tau_n  = det['SlabStress']['Normal']['SlabLayer98'][:,-1]
 tau_t  = det['SlabStress']['Tangential']['SlabLayer98'][:,-1]
 tau_sh = det['SlabStress']['ShearHeating']['SlabLayer98'][:,-1]
 surface_x = det['Surface']['position_0'][:,-1]
 surface_y = det['Surface']['position_1'][:,-1]
-surface_q = det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1]
+surface_q = -det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1]
 
 results = {k:v for k,v in _self.optionsdict["values"].items()}
 
@@ -122,6 +155,12 @@ results.update({
            "slab_x" : slab_x.tolist(),
            "slab_y" : slab_y.tolist(),
            "slab_T" : slab_T.tolist(),
+           "slab_x_98" : slab_x.tolist(),
+           "slab_y_98" : slab_y.tolist(),
+           "slab_T_98" : slab_T.tolist(),
+           "slab_x_108" : slab_x_108.tolist(),
+           "slab_y_108" : slab_y_108.tolist(),
+           "slab_T_108" : slab_T_108.tolist(),
            "tau_n"  : tau_n.tolist(),
            "tau_t"  : tau_t.tolist(),
            "tau_sh" : tau_sh.tolist(),
@@ -193,15 +232,67 @@ slabL  = stat['Stokes']['SlabLength']['functional_value'][-1]
 wedgeA = stat['Stokes']['WedgeArea']['functional_value'][-1]
 
 variables = OrderedDict()
-variables["resscale"]   = resscale
+variables["minres"]   = minres
 #variables["V"]          = V
 #variables["A"]          = A
+variables["T_point"]    = det["Temperature"]["PotentialTemperature"]["Point"][0,-1]
 variables["T*dS_slab"]  = stat['Stokes']['SlabTemperatureIntegral']['functional_value'][-1]/slabL
 variables["T*dx_wedge"] = stat['Stokes']['WedgeTemperatureIntegral']['functional_value'][-1]/wedgeA
 variables["Vrms_wedge"] = (stat['Stokes']['WedgeRMSSquaredVelocityIntegral']['functional_value'][-1]**0.5)*1000/wedgeA
 qi = det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1].argmax() # max because this is a negated value
 variables["q_surfmin"]  = -det["TemperatureFlux"]["Diffusive_1"]["Surface"][qi,-1]
 variables["x_surfmin"]  = det["Surface"]["position_0"][qi,-1]</string_value>
+        </variable>
+        <variable name="dofcount">
+          <string_value type="code" language="python3" lines="20">import dolfin
+import numpy as np
+
+mesh = dolfin.Mesh()
+dolfin.XDMFFile("subduction.xdmf").read(mesh)
+mesh.init()
+cellfunc = dolfin.MeshFunction("size_t", mesh, mesh.topology().dim())
+dolfin.XDMFFile("subduction_cell_ids.xdmf").read(cellfunc)
+cellmarkerarray = cellfunc.array()
+cell2vertex = mesh.topology()(2,0)
+cell2facet  = mesh.topology()(2,1)
+
+dofcount = {}
+dofcount["elements_crust"] = sum(cellmarkerarray==1)+sum(cellmarkerarray==2)
+dofcount["elements_wedge"] = sum(cellmarkerarray==3)+sum(cellmarkerarray==4)
+dofcount["elements_slab"]  = sum(cellmarkerarray==5)
+
+vertices_crust = set()
+vertices_wedge = set()
+vertices_slab = set()
+facets_crust = set()
+facets_wedge = set()
+facets_slab = set()
+for cell in dolfin.cells(mesh):
+  ci = cell.index()
+  cid = cellfunc[ci]
+  if cid == 1 or cid == 2:
+    vertices_crust.update(cell2vertex(ci))
+    facets_crust.update(cell2facet(ci))
+  if cid == 3 or cid == 4:
+    vertices_wedge.update(cell2vertex(ci))
+    facets_wedge.update(cell2facet(ci))
+  if cid == 5:
+    vertices_slab.update(cell2vertex(ci))
+    facets_slab.update(cell2facet(ci))
+
+dofcount["vertices_crust"] = len(vertices_crust)
+dofcount["vertices_wedge"] = len(vertices_wedge)
+dofcount["vertices_slab"]  = len(vertices_slab)
+
+dofcount["facets_crust"] = len(facets_crust)
+dofcount["facets_wedge"] = len(facets_wedge)
+dofcount["facets_slab"]  = len(facets_slab)
+
+dofcount["T"] = mesh.num_vertices() + mesh.num_facets()
+dofcount["v"] = (dofcount["vertices_wedge"] + dofcount["facets_wedge"])*2
+dofcount["p"] = dofcount["vertices_wedge"]
+dofcount["vp"] = (dofcount["vertices_slab"] + dofcount["facets_slab"])*2
+dofcount["pp"] = dofcount["vertices_slab"]</string_value>
         </variable>
         <variable name="finishtime">
           <string_value type="code" language="python3" lines="20">import os
@@ -303,16 +394,17 @@ params = list(variables.parameters.keys())
 variable = variables[0]
 for i in range(len(params)-1):
   variable = variable[0]
-sstring = "{}\t"*len(variable.keys())
-print(sstring.format(*[k for k in variable.keys()]))
+sstring = "{}\t"*(len(variable.keys())+1)
+print(sstring.format(*(["minres", "T_ndof"] + [k for k in variable.keys() if k != "minres"])))
 
 paramvals = sorted(list(itertools.product(*variables.parameters.values())), key=lambda x: [float(xi) for xi in x[::-1]])
 for values in paramvals:
   label = "\t".join(["{}".format(v) for i,v in enumerate(values) if len(variables.parameters[params[i]])&gt;1])
   key = {params[i]:v for i,v in enumerate(values)}
   variable = variables[key]
-  vstring = "{}\t"*1+"{:.4f}\t"*(len(variable.keys())-1)
-  print(vstring.format(*[v for v in variable.values()]))</string_value>
+  ldofcount = dofcount[key]
+  vstring = "{}\t"*2+"{:.4f}\t"*(len(variable.keys())-1)
+  print(vstring.format(*([variable["minres"], ldofcount["T"]] + [variable[v] for v in variable.keys() if v != "minres"])))</string_value>
     </test>
   </tests>
 </harness_options>
