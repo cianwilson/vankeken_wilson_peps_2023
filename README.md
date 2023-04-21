@@ -17,7 +17,7 @@ The primary subdirectories of this directory correspond to the different example
 The following instructions assume an active installation of TerraFERMA (the Transparent Finite ELement Rapid Model Assembler).  If
 one is not available the consider using the docker image provided for this directory at:
 
-https://github.com/users/cianwilson/packages/container/package/vankeken\_wilson\_peps\_2023
+https://github.com/users/cianwilson/packages/container/package/vankeken_wilson_peps_2023
 
 This docker image contains a complete installation of TerraFERMA and its dependencies, PETSc, FEniCS and SPuD, within an Ubuntu
 20.04LTS OS.  For a full description of TerraFERMA please refer to the README.md file in the `docker` directory and/or the webpage:
