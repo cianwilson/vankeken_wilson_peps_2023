@@ -1,0 +1,410 @@
+<?xml version='1.0' encoding='utf-8'?>
+<harness_options>
+  <length>
+    <string_value lines="1">medium</string_value>
+  </length>
+  <owner>
+    <string_value lines="1">cwilson</string_value>
+  </owner>
+  <description>
+    <string_value lines="1">A thermal subduction zone model.</string_value>
+  </description>
+  <simulations>
+    <simulation name="Solid">
+      <input_file>
+        <string_value type="filename" lines="1">subduction_linearized_p2p1p2.tfml</string_value>
+      </input_file>
+      <run_when name="input_changed_or_output_missing"/>
+      <number_processes>
+        <integer_value rank="0">1</integer_value>
+      </number_processes>
+      <parameter_sweep>
+        <parameter name="Dc">
+          <values>
+            <string_value lines="1">80.0</string_value>
+            <comment>Coupling depth, km</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/system::Stokes/coefficient::CouplingDepth/type/rank/value/constant", float(Dc))</string_value>
+            <single_build/>
+          </update>
+          <comment>Coupling depth</comment>
+        </parameter>
+        <parameter name="minres">
+          <values>
+            <string_value lines="1">2.0 1.0 0.5</string_value>
+            <comment>Resolution scale (lower -&gt; higher resolution)</comment>
+          </values>
+          <comment>Convergence rate</comment>
+        </parameter>
+        <parameter name="cfl">
+          <values>
+            <string_value lines="1">1.0 2.0</string_value>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/timestepping/timestep/adaptive/constraint::CourantNumber/requested_maximum_value", float(cfl))</string_value>
+            <single_build/>
+          </update>
+        </parameter>
+        <parameter name="V">
+          <values>
+            <string_value lines="1">100.0</string_value>
+            <comment>Convergence rate, mm/yr</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+# NOTE conversion to m/yr
+libspud.set_option("/system::Stokes/coefficient::ConvergenceSpeed/type/rank/value/constant", float(V)*1.e-3)</string_value>
+            <single_build/>
+          </update>
+          <comment>Convergence rate</comment>
+        </parameter>
+        <parameter name="A">
+          <values>
+            <string_value lines="1">100.0</string_value>
+            <comment>Age of slab, Myr</comment>
+          </values>
+          <update>
+            <string_value type="code" language="python3" lines="20">import libspud
+
+libspud.set_option("/system::Temperature/coefficient::SlabAge/type/rank/value/constant", float(A))</string_value>
+            <single_build/>
+          </update>
+          <comment>Age of slab</comment>
+        </parameter>
+      </parameter_sweep>
+      <required_input>
+        <filenames name="thickness">
+          <string>
+            <string_value type="filename" lines="1">sediment_thickness.py</string_value>
+          </string>
+        </filenames>
+      </required_input>
+      <dependencies>
+        <run name="Mesh">
+          <input_file>
+            <string_value type="filename" lines="1">../mesh/subduction.geo</string_value>
+          </input_file>
+          <run_when name="input_changed_or_output_missing"/>
+          <parameter_sweep>
+            <parameter name="Dc">
+              <update>
+                <string_value type="code" language="python3" lines="20">from string import Template as template
+input_file = template(input_file).safe_substitute({'cddepth':Dc})</string_value>
+              </update>
+            </parameter>
+            <parameter name="minres">
+              <update>
+                <string_value type="code" language="python3" lines="20">from string import Template as template
+input_file = template(input_file).safe_substitute({'minres':minres})</string_value>
+              </update>
+            </parameter>
+          </parameter_sweep>
+          <required_output>
+            <filenames name="Mesh">
+              <python>
+                <string_value type="code" language="python3" lines="20">Mesh = ['subduction'+ext for ext in ['.xdmf', '.h5', '_facet_ids.xdmf', '_facet_ids.h5', '_cell_ids.xdmf', '_cell_ids.h5']]</string_value>
+              </python>
+            </filenames>
+          </required_output>
+          <commands>
+            <command name="GMsh">
+              <string_value lines="1">gmsh -2 -algo meshadapt subduction.geo</string_value>
+            </command>
+            <command name="Convert">
+              <string_value lines="1">tfgmsh2xdmf subduction.msh</string_value>
+            </command>
+          </commands>
+        </run>
+      </dependencies>
+      <variables>
+        <variable name="det">
+          <string_value type="code" language="python3" lines="20">from buckettools.statfile import parser
+import os
+from buckettools.threadlibspud import *
+import json
+import csv
+
+filename = os.path.split(input_filename)[-1]
+threadlibspud.load_options(filename)
+basename = libspud.get_option("/io/output_base_name")
+threadlibspud.clear_options()
+det = parser(basename+".det")
+
+slab_x = det['SlabLayer98']['position_0'][:,-1] 
+slab_y = det['SlabLayer98']['position_1'][:,-1]
+slab_T = det['Temperature']['PotentialTemperature']['SlabLayer98'][:,-1]
+slab_x_108 = det['SlabLayer108']['position_0'][:,-1] 
+slab_y_108 = det['SlabLayer108']['position_1'][:,-1]
+slab_T_108 = det['Temperature']['PotentialTemperature']['SlabLayer108'][:,-1]
+tau_n  = det['SlabStress']['Normal']['SlabLayer98'][:,-1]
+tau_t  = det['SlabStress']['Tangential']['SlabLayer98'][:,-1]
+tau_sh = det['SlabStress']['ShearHeating']['SlabLayer98'][:,-1]
+surface_x = det['Surface']['position_0'][:,-1]
+surface_y = det['Surface']['position_1'][:,-1]
+surface_q = -det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1]
+
+results = {k:v for k,v in _self.optionsdict["values"].items()}
+
+results.update({
+           "slab_x" : slab_x.tolist(),
+           "slab_y" : slab_y.tolist(),
+           "slab_T" : slab_T.tolist(),
+           "slab_x_98" : slab_x.tolist(),
+           "slab_y_98" : slab_y.tolist(),
+           "slab_T_98" : slab_T.tolist(),
+           "slab_x_108" : slab_x_108.tolist(),
+           "slab_y_108" : slab_y_108.tolist(),
+           "slab_T_108" : slab_T_108.tolist(),
+           "tau_n"  : tau_n.tolist(),
+           "tau_t"  : tau_t.tolist(),
+           "tau_sh" : tau_sh.tolist(),
+           "surface_x" : surface_x.tolist(),
+           "surface_y" : surface_y.tolist(),
+           "surface_q" : surface_q.tolist()
+          })
+
+with open('slab_T.tsv', 'w') as f:
+  csv.writer(f, delimiter='\t').writerows(zip(results['slab_x'], results['slab_y'], results['slab_T']))
+with open('surface_q.tsv', 'w') as f:
+  csv.writer(f, delimiter='\t').writerows(zip(results['surface_x'], results['surface_y'], results['surface_q']))
+
+with open(basename+".json", 'w') as f:
+  json.dump(results, f, indent=4, separators=(",", ": "))</string_value>
+        </variable>
+        <variable name="stat">
+          <string_value type="code" language="python3" lines="20">from buckettools.statfile import parser
+import os
+from buckettools.threadlibspud import *
+import json
+import csv
+
+filename = os.path.split(input_filename)[-1]
+threadlibspud.load_options(filename)
+basename = libspud.get_option("/io/output_base_name")
+threadlibspud.clear_options()
+stat = parser(basename+".stat")</string_value>
+        </variable>
+        <variable name="errfile">
+          <string_value type="code" language="python3" lines="20">import os
+err = open("terraferma.err-0", 'r')
+
+print(err.read())
+err.seek(0)
+
+linecount = -1
+errfile = []
+for line in err.readlines():
+  if not line.startswith("WARNING:") and not line.startswith(os.linesep):
+    if line.startswith("*** WARNING:"):
+      linecount = 0
+    elif linecount &gt;= 0:
+      if line.startswith("-----------"):
+        linecount += 1
+      if linecount == 2:
+        linecount = -1
+    else:
+      errfile.append(line)
+
+err.close()</string_value>
+        </variable>
+        <variable name="variables">
+          <string_value type="code" language="python3" lines="20">from buckettools.statfile import parser
+import os
+from buckettools.threadlibspud import *
+import numpy as np
+from collections import OrderedDict
+
+filename = os.path.split(input_filename)[-1]
+threadlibspud.load_options(filename)
+basename = libspud.get_option("/io/output_base_name")
+threadlibspud.clear_options()
+
+det = parser(basename+".det")
+stat = parser(basename+".stat")
+
+slabL  = stat['Stokes']['SlabLength']['functional_value'][-1]
+wedgeA = stat['Stokes']['WedgeArea']['functional_value'][-1]
+
+variables = OrderedDict()
+variables["minres"]   = minres
+#variables["V"]          = V
+#variables["A"]          = A
+variables["T_point"]    = det["Temperature"]["PotentialTemperature"]["Point"][0,-1]
+variables["T*dS_slab"]  = stat['Stokes']['SlabTemperatureIntegral']['functional_value'][-1]/slabL
+variables["T*dx_wedge"] = stat['Stokes']['WedgeTemperatureIntegral']['functional_value'][-1]/wedgeA
+variables["Vrms_wedge"] = (stat['Stokes']['WedgeRMSSquaredVelocityIntegral']['functional_value'][-1]**0.5)*1000/wedgeA
+qi = det["TemperatureFlux"]["Diffusive_1"]["Surface"][:,-1].argmax() # max because this is a negated value
+variables["q_surfmin"]  = -det["TemperatureFlux"]["Diffusive_1"]["Surface"][qi,-1]
+variables["x_surfmin"]  = det["Surface"]["position_0"][qi,-1]</string_value>
+        </variable>
+        <variable name="dofcount">
+          <string_value type="code" language="python3" lines="20">import dolfin
+import numpy as np
+
+mesh = dolfin.Mesh()
+dolfin.XDMFFile("subduction.xdmf").read(mesh)
+mesh.init()
+cellfunc = dolfin.MeshFunction("size_t", mesh, mesh.topology().dim())
+dolfin.XDMFFile("subduction_cell_ids.xdmf").read(cellfunc)
+cellmarkerarray = cellfunc.array()
+cell2vertex = mesh.topology()(2,0)
+cell2facet  = mesh.topology()(2,1)
+
+dofcount = {}
+dofcount["elements_crust"] = sum(cellmarkerarray==1)+sum(cellmarkerarray==2)
+dofcount["elements_wedge"] = sum(cellmarkerarray==3)+sum(cellmarkerarray==4)
+dofcount["elements_slab"]  = sum(cellmarkerarray==5)
+
+vertices_crust = set()
+vertices_wedge = set()
+vertices_slab = set()
+facets_crust = set()
+facets_wedge = set()
+facets_slab = set()
+for cell in dolfin.cells(mesh):
+  ci = cell.index()
+  cid = cellfunc[ci]
+  if cid == 1 or cid == 2:
+    vertices_crust.update(cell2vertex(ci))
+    facets_crust.update(cell2facet(ci))
+  if cid == 3 or cid == 4:
+    vertices_wedge.update(cell2vertex(ci))
+    facets_wedge.update(cell2facet(ci))
+  if cid == 5:
+    vertices_slab.update(cell2vertex(ci))
+    facets_slab.update(cell2facet(ci))
+
+dofcount["vertices_crust"] = len(vertices_crust)
+dofcount["vertices_wedge"] = len(vertices_wedge)
+dofcount["vertices_slab"]  = len(vertices_slab)
+
+dofcount["facets_crust"] = len(facets_crust)
+dofcount["facets_wedge"] = len(facets_wedge)
+dofcount["facets_slab"]  = len(facets_slab)
+
+dofcount["T"] = mesh.num_vertices() + mesh.num_facets()
+dofcount["v"] = (dofcount["vertices_wedge"] + dofcount["facets_wedge"])*2
+dofcount["p"] = dofcount["vertices_wedge"]
+dofcount["vp"] = (dofcount["vertices_slab"] + dofcount["facets_slab"])*2
+dofcount["pp"] = dofcount["vertices_slab"]</string_value>
+        </variable>
+        <variable name="finishtime">
+          <string_value type="code" language="python3" lines="20">import os
+from buckettools.threadlibspud import *
+
+filename = os.path.split(input_filename)[-1]
+threadlibspud.load_options(filename)
+finishtime = libspud.get_option("/timestepping/finish_time")
+threadlibspud.clear_options()</string_value>
+        </variable>
+      </variables>
+    </simulation>
+  </simulations>
+  <tests>
+    <test name="errors">
+      <string_value type="code" language="python3" lines="20">import sys
+import itertools
+noerrors = True
+
+params = list(errfile.parameters.keys())
+
+for values in itertools.product(*errfile.parameters.values()):
+  label = ", ".join(["{} = {}".format(params[i], v) for i,v in enumerate(values) if len(errfile.parameters[params[i]])&gt;1])
+  key = {params[i]:v for i,v in enumerate(values)}
+  if len(errfile[key]) &gt; 0:
+    print("ERROR: unexpected output in terraferma.err-0!")
+    print(errfile[key])
+    for line in errfile[key]:
+      print(line)
+      sys.stdout.write(line)
+    noerrors = False
+
+assert(noerrors)</string_value>
+    </test>
+    <test name="plot">
+      <string_value type="code" language="python3" lines="20">import os
+havedisplay = False
+if os.environ.get('PLOT', 0):
+  exitval = os.system('python3 -c "import matplotlib.pyplot as plt; plt.figure()"')
+  havedisplay = (exitval == 0) and "DISPLAY" in os.environ
+
+import matplotlib
+if havedisplay:
+  matplotlib.use('GTK3Agg')
+else:
+  matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+import itertools
+
+params = list(det.parameters.keys())
+figT = plt.figure()
+axT = figT.gca()
+figq = plt.figure()
+axq = figq.gca()
+for values in itertools.product(*det.parameters.values()):
+  label = ", ".join(["{} = {}".format(params[i], v) for i,v in enumerate(values) if len(det.parameters[params[i]])&gt;1])
+  key = {params[i]:v for i,v in enumerate(values)}
+  z = -det[key]['SlabLayer98']['position_1'][:,-1]
+  T = det[key]['Temperature']['PotentialTemperature']['SlabLayer98'][:,-1]
+  axT.plot(T, z, linewidth=2, label=label)
+  z100 = (abs(z - 100)).argmin()
+  print("T(z={}): ".format(z[z100])+label+": {}".format(T[z100]))
+  print(det[key]['Temperature']['PotentialTemperature']['Right'][:,-1])
+  print(det[key]['Temperature']['PotentialTemperature']['Left'][:,-1])
+  x = det[key]['Surface']['position_0'][:,-1]
+  q = det[key]['TemperatureFlux']['Diffusive_1']['Surface'][:,-1]
+  axq.plot(x, q, linewidth=2, label=label)
+
+axT.legend()
+axT.set_ylim([0.0, 150.0])
+axT.set_xlabel(r"$T$ ($^\circ$C)")
+axT.set_ylabel(r"$z$ (km)")
+axq.legend()
+axq.set_xlabel(r"$x$ (km)")
+axq.set_ylabel(r"$q_z$ (W/m$^2$)")
+figT.savefig("subduction_T.png")
+figq.savefig("subduction_q.png")</string_value>
+    </test>
+    <test name="display">
+      <string_value type="code" language="python3" lines="20">import os
+havedisplay = False
+if os.environ.get('PLOT', 0):
+  exitval = os.system('python3 -c "import matplotlib.pyplot as plt; plt.figure()"')
+  havedisplay = (exitval == 0) and "DISPLAY" in os.environ
+
+import matplotlib
+import itertools
+if havedisplay:
+  matplotlib.use('GTK3Agg')
+  import matplotlib.pyplot as plt
+  plt.show()</string_value>
+    </test>
+    <test name="print">
+      <string_value type="code" language="python3" lines="20">import itertools
+
+params = list(variables.parameters.keys())
+
+variable = variables[0]
+for i in range(len(params)-1):
+  variable = variable[0]
+sstring = "{}\t"*(len(variable.keys())+1)
+print(sstring.format(*(["minres", "T_ndof"] + [k for k in variable.keys() if k != "minres"])))
+
+paramvals = sorted(list(itertools.product(*variables.parameters.values())), key=lambda x: [float(xi) for xi in x[::-1]])
+for values in paramvals:
+  label = "\t".join(["{}".format(v) for i,v in enumerate(values) if len(variables.parameters[params[i]])&gt;1])
+  key = {params[i]:v for i,v in enumerate(values)}
+  variable = variables[key]
+  ldofcount = dofcount[key]
+  vstring = "{}\t"*2+"{:.4f}\t"*(len(variable.keys())-1)
+  print(vstring.format(*([variable["minres"], ldofcount["T"]] + [variable[v] for v in variable.keys() if v != "minres"])))</string_value>
+    </test>
+  </tests>
+</harness_options>
