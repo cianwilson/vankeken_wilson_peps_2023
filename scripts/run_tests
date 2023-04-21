@@ -35,7 +35,7 @@ tfsimulationharness --parameters nelements 32 --test $repo/blankenbach/2a/blanke
 
 tfsimulationharness --parameters nelements 20 nelements 40 nelements 80 --test $repo/cornerflow/cornerflow.shml
 
-tfsimulationharness --parameters resscale 2.0 --test $repo/subduction_benchmark/case1/subduction_steadystate_linpicard_p2p1p2.shml
+tfsimulationharness --parameters minres 2.0 --test $repo/subduction_benchmark/case1/subduction_steadystate_linpicard_p2p1p2.shml
 
-tfsimulationharness --parameters resscale 2.0 --test $repo/subduction_benchmark/case2/subduction_steadystate_linpicard_p2p1p2.shml
+tfsimulationharness --parameters minres 2.0 --test $repo/subduction_benchmark/case2/subduction_steadystate_linpicard_p2p1p2.shml
 
