@@ -1,6 +1,6 @@
 name: Build and Test
 
-on: [push]
+on: [push,release]
 
 env:
   registry: ghcr.io
@@ -14,7 +14,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [ "Build Focal" ]
         include:
         
           - name: "Build Focal"
@@ -26,7 +25,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get Name
-        run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)" >> $GITHUB_ENV
+        if: github.event_name == "release"
+        run: echo "name=latest" >> $GITHUB_ENV
+
+      - name: Get Name
+        if: github.event_name == "push"
+        run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)-"${{ matrix.release }} >> $GITHUB_ENV
 
       - name: Login
         uses: docker/login-action@v2
@@ -40,13 +44,14 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push
+        if: 
         id: docker_build
         uses: docker/build-push-action@v3
         with:
           context: docker/${{ matrix.release }}
           file: docker/${{ matrix.release }}/Dockerfile
           push: true
-          tags: ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }}
+          tags: ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}
           no-cache: true
           platforms: linux/amd64,linux/arm64
 
@@ -70,14 +75,19 @@ jobs:
 
     steps:
 
-      - name: ${{ matrix.name }} Name
-        run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)" >> $GITHUB_ENV
+      - name: Get Name
+        if: github.event_name == "release"
+        run: echo "name=latest" >> $GITHUB_ENV
+
+      - name: Get Name
+        if: github.event_name == "push"
+        run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)-"${{ matrix.release }} >> $GITHUB_ENV
 
       - name: ${{ matrix.name }} Testing
         run: |
          chmod 777 .
-         docker pull ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }}
-         docker run -v $PWD:/home/tfuser/shared -e HOST_UID=`id -u` -e HOST_GID=`id -g` --workdir /home/tfuser/vankeken_wilson_peps_2023 ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}-${{ matrix.release }} "${{ matrix.command }} || ( tar --exclude=*.build -cvzf ${{ matrix.outputtar }} .; cp -v ${{ matrix.outputtar }} /home/tfuser/shared; ( exit 1 ) )"
+         docker pull ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }}
+         docker run -v $PWD:/home/tfuser/shared -e HOST_UID=`id -u` -e HOST_GID=`id -g` --workdir /home/tfuser/vankeken_wilson_peps_2023 ${{ env.registry }}/cianwilson/vankeken_wilson_peps_2023:${{ env.name }} "${{ matrix.command }} || ( tar --exclude=*.build -cvzf ${{ matrix.outputtar }} .; cp -v ${{ matrix.outputtar }} /home/tfuser/shared; ( exit 1 ) )"
 
       - uses: actions/upload-artifact@v3
         if: failure()
