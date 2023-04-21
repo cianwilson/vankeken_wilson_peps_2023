@@ -18,6 +18,7 @@ while [ "$1" != "" ]; do
 done
 
 repodir=$(dirname $(dirname $(realpath $0) ) )
+# set up to work in the zenodo repository
 seprandir=$repodir/../sepran
 
 for f1 in `ls $repodir/??_*/subduction_linearized_p2p1p2.tfml.run/Dc_80.0/minres_1.0/cfl_1.0/run_0/subduction_solid.xdmf`;
