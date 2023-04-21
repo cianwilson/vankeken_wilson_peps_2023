@@ -25,11 +25,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Get Name
-        if: github.event_name == "release"
+        if: github.event_name == 'release'
         run: echo "name=latest" >> $GITHUB_ENV
 
       - name: Get Name
-        if: github.event_name == "push"
+        if: github.event_name == 'push'
         run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)-"${{ matrix.release }} >> $GITHUB_ENV
 
       - name: Login
@@ -76,11 +76,11 @@ jobs:
     steps:
 
       - name: Get Name
-        if: github.event_name == "release"
+        if: github.event_name == 'release'
         run: echo "name=latest" >> $GITHUB_ENV
 
       - name: Get Name
-        if: github.event_name == "push"
+        if: github.event_name == 'push'
         run: echo "name=$(echo ${GITHUB_REF//\//_} | cut -c 6-)-"${{ matrix.release }} >> $GITHUB_ENV
 
       - name: ${{ matrix.name }} Testing
