@@ -74,7 +74,7 @@ eta = 1.</string_value>
   <system name="Stokes">
     <mesh name="Mesh"/>
     <ufl_symbol name="global">
-      <string_value lines="1">us</string_value>
+      <string_value lines="1">u</string_value>
     </ufl_symbol>
     <field name="Velocity">
       <ufl_symbol name="global">
@@ -331,9 +331,9 @@ r = rv + rp + rT</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value type="code" language="python3" lines="20">a = derivative(r, us_i, us_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(r, u_i, u_a)</string_value>
           <ufl_symbol name="solver">
-            <string_value lines="1">a</string_value>
+            <string_value lines="1">J</string_value>
           </ufl_symbol>
         </form>
         <form_representation name="quadrature"/>
@@ -371,7 +371,7 @@ r = rv + rp + rT</string_value>
           <string_value type="code" language="python3" lines="20">rv = (inner(sym(grad(v_t)), 2*sym(grad(v_i))) - div(v_t)*p_i \
       + inner(v_t, gravity)*T_i \
      )*dx
-rp = p_t*div(v_i)*dx
+rp = -p_t*div(v_i)*dx
 rT = (T_t*inner(v_i, grad(T_i)) \
       + recRa*inner(grad(T_t), grad(T_i)) \
      )*dx
@@ -383,9 +383,9 @@ r = rv + rp + rT</string_value>
           </ufl_symbol>
         </form>
         <form name="Jacobian" rank="1">
-          <string_value type="code" language="python3" lines="20">a = derivative(r, us_i, us_a)</string_value>
+          <string_value type="code" language="python3" lines="20">J = derivative(r, u_i, u_a)</string_value>
           <ufl_symbol name="solver">
-            <string_value lines="1">a</string_value>
+            <string_value lines="1">J</string_value>
           </ufl_symbol>
         </form>
         <form_representation name="quadrature"/>
