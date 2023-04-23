@@ -77,7 +77,7 @@ libspud.set_option("/system::Temperature/coefficient::SlabAge/type/rank/value/co
       <dependencies>
         <run name="Mesh">
           <input_file>
-            <string_value type="filename" lines="1">../mesh/subduction.geo</string_value>
+            <string_value type="filename" lines="1">mesh/subduction.geo</string_value>
           </input_file>
           <run_when name="input_changed_or_output_missing"/>
           <parameter_sweep>
