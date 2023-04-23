@@ -12,9 +12,8 @@ The subdirectories of this directory correspond to the two different benchmark c
 * `case1`: an isoviscous benchmark case
 * `case2`: a variable viscosity benchmark case
 
-and some supplementary directories:
+and a supplementary directory:
 
-* `mesh` : containing the gmsh input file
 * `scripts` : containing various plotting scripts
 
 ## Files
