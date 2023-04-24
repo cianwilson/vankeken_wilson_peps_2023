@@ -22,7 +22,7 @@ sorted(glob.glob('??_*'))
 minres='1.0'
 cfl='1.0'
 
-repodir = os.path.join(os.path.dirname(__file__), os.path.pardir)
+repodir = os.path.relpath(os.path.join(os.path.dirname(__file__), os.path.pardir))
 subdirs = sorted([os.path.basename(d) for d in glob.glob(os.path.join(repodir, '??_*'))])
 for subdir in subdirs:
   subpath = os.path.join(repodir, subdir, 'subduction_linearized_p2p1p2.tfml.run', 'Dc_80.0', 'minres_'+minres, 'cfl_'+cfl, 'run_0')
@@ -40,7 +40,7 @@ output += """\\end{longtable}
 
 \\end{document}""".split(os.linesep)
 
-with open(os.path.join('all_temperature_diffs.tex'), 'w') as f:
+with open(os.path.join('Figures_comp_D80new_TF-Sepran_all.tex'), 'w') as f:
   f.write(os.linesep.join(output))
 
 
