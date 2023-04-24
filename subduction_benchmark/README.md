@@ -61,7 +61,7 @@ The example above runs a single simulation with some set of default parameters. 
 line through the simulation harness and default to the benchmark values.  These are:
 
 * Dc       - the mechanical coupling depth along the slab (km, default = 80.0)
-* minres   - a scaling factor for the resolution setting the minimum element size and scaling all other resolutions appropriately (km, default = 1.0)
+* minres   - a scaling factor for the resolution setting the minimum element size and scaling all other resolutions appropriately (km, default = 2.0, 1.0, 0.5)
 * V        - convergence speed (mm/yr, default = 100.0)
 * A        - age of slab at trench (Myr, default = 100.0)
 * cfl      - the maximum Courant number to allow when selecting a timestep (only applicable to the time-dependent cases, default = 1.0 & 2.0)
