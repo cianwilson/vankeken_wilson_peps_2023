@@ -16,15 +16,15 @@ def solve_poisson_2d(ne, p=1):
     * p  - polynomial order of the solution function space
   """
   # Describe the domain (a unit square)
-  # and also the tesselation of that domain into ne 
+  # and also the tessellation of that domain into ne 
   # equally spaced squares in each dimension which are
   # subdivided into two triangular elements each
   mesh = UnitSquareMesh(ne, ne, diagonal='right')
-  # Define the solution functionspace using Lagrange polynomials
+  # Define the solution function space using Lagrange polynomials
   # of order p
   V = FunctionSpace(mesh, "Lagrange", p)
 
-  # Define the trial and test functions on the same functionspace (V)
+  # Define the trial and test functions on the same function space (V)
   T_a = TrialFunction(V)
   T_t = TestFunction(V)
 

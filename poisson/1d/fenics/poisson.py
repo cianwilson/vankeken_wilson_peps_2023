@@ -16,14 +16,14 @@ def solve_poisson_1d(ne, p=1):
     * p  - polynomial order of the solution function space
   """
   # Describe the domain (a one-dimensional unit interval)
-  # and also the tesselation of that domain into ne 
+  # and also the tessellation of that domain into ne 
   # equally spaced elements
   mesh = UnitIntervalMesh(ne)
-  # Define the solution functionspace using Lagrange polynomials
+  # Define the solution function space using Lagrange polynomials
   # of order p
   V = FunctionSpace(mesh, "Lagrange", p)
 
-  # Define the trial and test functions on the same functionspace (V)
+  # Define the trial and test functions on the same function space (V)
   T_a = TrialFunction(V)
   T_t = TestFunction(V)
 
