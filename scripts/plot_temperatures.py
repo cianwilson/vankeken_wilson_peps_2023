@@ -122,9 +122,9 @@ def extract_temperatures(filename1, filename2=None, title=None, index=-1):
       cdq = [cdx, tq[np.abs(tcoordx-cdx).argmin()]]
 
     else:
-      slabpaths = glob.glob1(path, '*slabpaths.001')
+      slabpaths = sorted(glob.glob1(path, '*slabpaths.*'), key=lambda f: int(f.split('.')[-1]))
       if len(slabpaths) > 0: 
-        slabfilename = os.path.join(path, slabpaths[0])
+        slabfilename = os.path.join(path, slabpaths[-1])
         slab = np.loadtxt(slabfilename)
 
         scoordy = slab[slab[:,4]==98][:,1]
