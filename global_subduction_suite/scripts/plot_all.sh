@@ -25,7 +25,7 @@ for f1 in `ls $repodir/??_*/subduction_linearized_p2p1p2.tfml.run/Dc_80.0/minres
 do
   subdir=`echo $(realpath --relative-to=$repodir $f1) | awk -F "/" '{print $1}'`
   echo "Processing $subdir"
-  f2="$seprandir/$subdir/T_001.vtu"
+  f2=`ls $seprandir/$subdir/T_*.vtu | sort -n -t _ -k 2 | tail -n1`
   python3 $repodir/scripts/plot_temperatures.py -f1 $f1 -f2 $f2 -t $subdir
 done
 
