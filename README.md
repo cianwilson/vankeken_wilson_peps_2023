@@ -1,6 +1,10 @@
 This repository contains the input files for TerraFERMA and FEniCS as used in:
-"An introductory review of thermal structure of subduction zones: II. Numerical approach, validation, and comparison", 
-van Keken & Wilson, PEPS, 2023.
+"An introductory review of the thermal structure of subduction zones: II—numerical approach and validation", Wilson & van Keken, PEPS, 2023 
+and 
+"An introductory review of the thermal structure of subduction zones: III—Comparison between models and observations", van Keken & Wilson, PEPS, 2023.
+
+Model output from these papers can be found on zenodo at:
+https://zenodo.org/doi/10.5281/zenodo.7843967
 
 ## Directories
 
